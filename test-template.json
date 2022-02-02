@@ -1,6 +1,6 @@
 {
   "version": "2",
-  "templates": [
+  "templates":
 	{
 		"type":2,
 		"title":"Portainer Agent",
@@ -15,5 +15,4 @@
 			"url":"https://github.com/portainer/templates",
 			"stackfile":"stacks/portainer-agent/docker-stack.yml"
 		}
-  ]
 }
