@@ -8,7 +8,6 @@
       "stackfile":"https://raw.githubusercontent.com/portainer/templates/master/stacks/wordpress/edge/docker-stack.yml"
     },
     {
-
 	"type":1,
 	"title":"NodeJS",
 	"description":"JavaScript-based platform for server-side and networking applications",
@@ -20,7 +19,6 @@
 	"image":"node:latest",
 	"interactive":true,
 	"command":"/bin/bash"
-		}
     }
   ]
 }
