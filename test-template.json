@@ -3,7 +3,7 @@
   "templates":[
     {
       "type":1,
-      "title":"Registry",
+      "title":"Registry - Test Automation",
       "description":"Docker image registry",
       "categories":[
         "docker"
@@ -22,7 +22,7 @@
     },
     {
       "type":2,
-      "title":"Wordpress",
+      "title":"Wordpress - Test Automation",
       "description":"Wordpress setup with a MySQL database",
       "note":"Deploys a Wordpress instance connected to a MySQL database.",
       "categories":[
@@ -44,7 +44,7 @@
     },
     {
       "type":3,
-      "title":"Wordpress",
+      "title":"Wordpress - Test Automation",
       "description":"Wordpress setup with a MySQL database",
       "note":"Deploys a Wordpress instance connected to a MySQL database.",
       "categories":[
@@ -66,7 +66,7 @@
     },
     {
       "type":4,
-      "title":"Wordpress",
+      "title":"Wordpress - Test Automation",
       "description":"Wordpress setup with a MySQL database",
       "note":"Deploys a Wordpress instance connected to a MySQL database.",
       "stackfile":"https://raw.githubusercontent.com/portainer/templates/master/stacks/wordpress/edge/docker-stack.yml"
