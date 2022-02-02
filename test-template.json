@@ -1,12 +1,26 @@
 {
-	"version":"1",
-	"templates":[
-		{
-			"type":4,
-			"title":"Wordpress",
-			"description":"Wordpress setup with a MySQL database",
-			"note":"Deploys a Wordpress instance connected to a MySQL database.",
-			"stackfile":"https://raw.githubusercontent.com/portainer/templates/master/stacks/wordpress/edge/docker-stack.yml"
+  "version": "2",
+  "templates": [
+    {
+      "type":4,
+      "title":"Wordpress",
+      "note":"Deploys a Wordpress instance connected to a MySQL database.",
+      "stackfile":"https://raw.githubusercontent.com/portainer/templates/master/stacks/wordpress/edge/docker-stack.yml"
+    },
+    {
+
+	"type":1,
+	"title":"NodeJS",
+	"description":"JavaScript-based platform for server-side and networking applications",
+	"categories":[
+		"development"
+	],
+	"platform":"linux",
+	"logo":"https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/node.png",
+	"image":"node:latest",
+	"interactive":true,
+	"command":"/bin/bash"
 		}
-	]
+    }
+  ]
 }
