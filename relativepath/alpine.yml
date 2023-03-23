@@ -1,0 +1,8 @@
+version: '3'
+services:
+ relative-path-alpine:
+  image: alpine
+  tty: true
+  stind_open: true
+  volumes:
+   - ../html:/home/alpine
