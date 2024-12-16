@@ -1,0 +1,7 @@
+version: '3'
+services:
+ gitops-update-automation-test-webhook:
+  image: nats
+  tty: true
+  stdin_open: true
+  
