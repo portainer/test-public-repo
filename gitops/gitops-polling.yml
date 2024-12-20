@@ -2,6 +2,6 @@ version: '3'
 services:
  gitops-update-automation-test-webhook:
   image: alpine:latest
-  tty: true
-  stdin_open: true
+  tty: false
+  stdin_open: false
   
