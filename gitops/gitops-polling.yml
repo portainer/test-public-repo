@@ -1,7 +1,7 @@
 version: '3'
 services:
  gitops-update-automation-test-webhook:
-  image: nats
+  image: alpine:latest
   tty: true
   stdin_open: true
   
