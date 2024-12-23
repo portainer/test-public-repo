@@ -4,5 +4,7 @@ services:
   image: alpine:latest
   tty: false
   stdin_open: false
+  ports:
+   - 41:80
   
   
