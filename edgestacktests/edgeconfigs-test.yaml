@@ -1,0 +1,5 @@
+services:
+  configtest:
+    image: nginx:latest
+    env_file:
+      - ./edgeconfigs/edgestacktest-standalone-edge-agent/stack.env
