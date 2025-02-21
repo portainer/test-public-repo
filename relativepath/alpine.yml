@@ -3,6 +3,6 @@ services:
  relative-path-alpine:
   image: alpine
   tty: true
-  stind_open: true
+  stdin_open: true
   volumes:
    - ../html:/home/alpine
