@@ -1,5 +1,0 @@
-version: "3"
-
-services:
-  compose-url-nginx:
-    image: nginx

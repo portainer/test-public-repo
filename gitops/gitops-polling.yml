@@ -1,7 +1,0 @@
-version: '3'
-services:
- gitops-update-automation-test-polling:
-  image: nats:latest
-  tty: true
-  stdin_open: true
-  

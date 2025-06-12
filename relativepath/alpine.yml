@@ -1,8 +1,0 @@
-version: '3'
-services:
- relative-path-alpine:
-  image: alpine
-  tty: true
-  stdin_open: true
-  volumes:
-   - ../html:/home/alpine

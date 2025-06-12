@@ -1,5 +1,0 @@
-services:
-  configtest:
-    image: nginx:latest
-    env_file:
-      - ../edge-configs/${PORTAINER_EDGE_GROUP}/stack.env
