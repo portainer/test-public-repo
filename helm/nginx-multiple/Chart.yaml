@@ -1,0 +1,5 @@
+apiVersion: v2
+name: nginx-multiple
+description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
+version: 0.1.0
+appVersion: "1.25.0"

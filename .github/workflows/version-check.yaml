@@ -1,0 +1,25 @@
+# name: Check Helm Chart Version Updated
+
+# on:
+#   pull_request:
+#     paths:
+#       - 'helm/**'
+
+# jobs:
+#   check-version:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       - name: Verify Chart.yaml version bump
+#         run: |
+#           git fetch origin main:refs/remotes/origin/main
+#           CHANGED=$(git diff origin/main --name-only | grep 'Chart.yaml' || true)
+#           if [ -z "$CHANGED" ]; then
+#             echo "ERROR: Chart.yaml not updated. Please bump version."
+#             exit 1
+#           else
+#             echo "Chart.yaml updated. Proceeding."
+#           fi

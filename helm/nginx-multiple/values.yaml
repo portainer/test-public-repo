@@ -1,0 +1,10 @@
+# Number of nginx deployments to create
+deploymentCount: 3
+
+# Nginx image
+image:
+  repository: nginx
+  tag: "1.25.0"
+  pullPolicy: IfNotPresent
+
+resources: {}
