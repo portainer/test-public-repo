@@ -1,5 +1,5 @@
 # Number of nginx deployments to create
-deploymentCount: 3
+deploymentCount: 15
 
 # Nginx image
 image:
