@@ -1,4 +1,4 @@
-{{- $count := .Values.deploymentCount | int }}
+{{- $count := .Values.deploymentCount }}
 {{- range $i := until $count }}
 apiVersion: apps/v1
 kind: Deployment
