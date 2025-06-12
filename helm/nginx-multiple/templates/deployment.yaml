@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ $.Values.image.repository }}:{{ $.Values.image.tag }}
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
           ports:
             - containerPort: 80
 {{- end }}
