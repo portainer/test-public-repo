@@ -4,7 +4,7 @@ This repo contains Helm charts managed via GitHub Actions.
 
 ## Available Charts
 
-- nginx-multiple
+- nginx-multiple - To deploy the same deployment n number of times based on the values
 
 ## Usage
 
