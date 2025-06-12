@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "properties": {
+    "deploymentCount": {
+      "type": "integer",
+      "title": "Number of Deployments",
+      "default": 5,
+      "minimum": 1
+    },
+    "image": {
+      "type": "object",
+      "properties": {
+        "repository": {
+          "type": "string",
+          "default": "nginx"
+        },
+        "tag": {
+          "type": "string",
+          "default": "1.21.1"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "default": "IfNotPresent"
+        }
+      }
+    }
+  }
+}
