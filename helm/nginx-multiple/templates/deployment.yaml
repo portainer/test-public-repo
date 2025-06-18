@@ -5,16 +5,20 @@ kind: Deployment
 metadata:
   name: nginx-deployment-{{ $i }}
   labels:
-    helm.sh/chart: {{ $.Chart.Name }}
+    app.kubernetes.io/name: nginx-multiple
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/managed-by: Helm
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx-{{ $i }}
+      app.kubernetes.io/name: nginx-multiple
+      app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $i }}
   template:
     metadata:
       labels:
-        app: nginx-{{ $i }}
+        app.kubernetes.io/name: nginx-multiple
+        app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $i }}
     spec:
       containers:
         - name: nginx
