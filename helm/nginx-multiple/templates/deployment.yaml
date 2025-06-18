@@ -4,6 +4,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nginx-deployment-{{ $i }}
+labels:
+  helm.sh/chart: {{ .Chart.Name }}
 spec:
   replicas: 1
   selector:
