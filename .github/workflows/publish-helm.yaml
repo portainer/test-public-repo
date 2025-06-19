@@ -50,3 +50,18 @@ jobs:
           done <<< "$VERSIONS"
 
       - name: Package custom charts (e.g. nginx-multiple)
+        run: |
+          for chart in $(find helm -maxdepth 1 -mindepth 1 -type d); do
+            helm package "$chart" -d .chart-out
+          done
+
+      - name: Generate merged index.yaml
+        run: |
+          helm repo index .chart-out --url https://portainer.github.io/test-public-repo/
+
+      - name: Publish to GitHub Pages (gh-pages branch)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .chart-out
+          publish_branch: gh-pages
