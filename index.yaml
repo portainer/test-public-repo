@@ -3,11 +3,11 @@ entries:
   nginx-multiple:
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2025-06-18T05:47:26.961212258Z"
+    created: "2025-06-19T07:10:30.835165569Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
-    digest: f2e437257e1fdb233ea4aada2b68546a8813229c8f1f715a3647cbb377218a89
+    digest: d1e93a6b72fabc2ef1becdf5039c0baf56779018489854d6c726e1f7c637af49
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.1.tgz
     version: 0.1.1
-generated: "2025-06-18T05:47:26.9609243Z"
+generated: "2025-06-19T07:10:30.834883362Z"
