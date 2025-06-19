@@ -2,16 +2,18 @@ name: Sync Apache Helm Chart
 
 on:
   schedule:
-    - cron: '0 3 * * *'  # Runs daily at 3 AM UTC
-  workflow_dispatch:     # Manual trigger
+    - cron: '0 3 * * *'  # Daily at 3 AM UTC
+  workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.DEVI_PAT_TOKEN }}
 
       - name: Set up Helm
         uses: azure/setup-helm@v3
@@ -31,11 +33,11 @@ jobs:
           echo "$VERSIONS" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Download and package versions
+      - name: Download and package chart versions
         run: |
           mkdir -p helm/apache
           while IFS= read -r VERSION; do
-            echo "Processing Apache chart version: $VERSION"
+            echo "Packaging version: $VERSION"
             helm pull bitnami/apache --version "$VERSION" --untar --untardir helm/apache
             helm package helm/apache/apache --version "$VERSION" --app-version "$VERSION" -d helm/apache
             rm -rf helm/apache/apache
@@ -47,7 +49,9 @@ jobs:
           helm repo index helm/apache --url https://portainer.github.io/test-public-repo/helm/apache
 
       - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Update Apache Helm chart versions"
-          file_pattern: 'helm/apache/*'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add helm/apache
+          git commit -m "Update Apache Helm chart versions" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.DEVI_PAT_TOKEN }}@github.com/portainer/test-public-repo.git HEAD:main
