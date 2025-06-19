@@ -3,6 +3,7 @@ name: Publish Helm Charts to GitHub Pages
 on:
   schedule:
     - cron: '0 3 * * *'  # Daily at 3 AM UTC
+  workflow_dispatch:      # ✅ Manual trigger
   push:
     branches:
       - master
@@ -16,7 +17,7 @@ jobs:
       contents: write
 
     steps:
-      - name: Checkout repository (full history)
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -30,36 +31,49 @@ jobs:
       - name: Add Bitnami repo
         run: helm repo add bitnami https://charts.bitnami.com/bitnami && helm repo update
 
-      - name: Lint local Helm charts (e.g. nginx-multiple)
+      - name: Lint local charts
         run: |
           for chart in $(find helm -maxdepth 1 -mindepth 1 -type d); do
             helm lint "$chart"
           done
 
-      - name: Create chart output directory
-        run: mkdir -p .chart-out
+      - name: Create working directories
+        run: mkdir -p .chart-out .chart-tmp
 
-      - name: Package latest 10 Bitnami Apache charts
+      - name: Fetch existing gh-pages/index.yaml
         run: |
-          VERSIONS=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
-          while IFS= read -r VERSION; do
-            echo "Packaging Apache $VERSION"
-            helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
-            helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
-            rm -rf .chart-tmp/apache
-          done <<< "$VERSIONS"
+          mkdir -p .gh-pages
+          git fetch origin gh-pages
+          git show origin/gh-pages:index.yaml > .gh-pages/index.yaml || echo "index.yaml not found"
+      
+      - name: Package only new Apache versions
+        run: |
+          EXISTING=$(yq '.entries.apache[].version' .gh-pages/index.yaml 2>/dev/null || echo "")
+          LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
 
-      - name: Package custom charts (e.g. nginx-multiple)
+          for VERSION in $LATEST; do
+            if echo "$EXISTING" | grep -qx "$VERSION"; then
+              echo "⏩ Skipping already packaged Apache $VERSION"
+            else
+              echo "📦 Packaging Apache $VERSION"
+              helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
+              helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
+              rm -rf .chart-tmp/apache
+            fi
+          done
+
+      - name: Package local charts (e.g. nginx-multiple)
         run: |
           for chart in $(find helm -maxdepth 1 -mindepth 1 -type d); do
             helm package "$chart" -d .chart-out
           done
 
-      - name: Generate merged index.yaml
+      - name: Merge or generate index.yaml
         run: |
-          helm repo index .chart-out --url https://portainer.github.io/test-public-repo/
+          cp .gh-pages/index.yaml .chart-out/index.yaml 2>/dev/null || true
+          helm repo index .chart-out --url https://portainer.github.io/test-public-repo --merge .chart-out/index.yaml
 
-      - name: Publish to GitHub Pages (gh-pages branch)
+      - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
