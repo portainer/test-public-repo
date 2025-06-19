@@ -56,9 +56,11 @@ jobs:
           git fetch origin gh-pages || git checkout --orphan gh-pages
           git switch gh-pages
 
-          mkdir -p helm/apache
-          cp -r helm/apache/* helm/apache/
+          # Optional: clean old chart files (only if you want a fresh start each time)
+          # rm -rf helm/apache
 
+          # Move the new helm/apache contents into the gh-pages branch
           git add helm/apache
           git commit -m "Publish latest Apache Helm charts to gh-pages" || echo "No changes to commit"
           git push https://x-access-token:${{ secrets.DEVI_PAT_TOKEN }}@github.com/portainer/test-public-repo.git gh-pages
+
