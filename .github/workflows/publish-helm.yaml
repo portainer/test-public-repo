@@ -1,14 +1,14 @@
 name: Publish Helm Charts to GitHub Pages
 
 on:
-  schedule:
-    - cron: '0 3 * * *'  # Daily at 3 AM UTC
-  workflow_dispatch:      # ✅ Manual trigger
   push:
     branches:
       - master
     paths:
       - 'helm/**'
+  schedule:
+    - cron: '0 3 * * *'  # Daily at 3 AM UTC
+  workflow_dispatch:
 
 jobs:
   publish:
@@ -38,52 +38,59 @@ jobs:
           done
 
       - name: Create working directories
-        run: mkdir -p .chart-out .chart-tmp
+        run: mkdir -p .chart-out .chart-tmp .gh-pages
 
-      - name: Fetch existing gh-pages/index.yaml
+      - name: Fetch existing gh-pages
         run: |
-          mkdir -p .gh-pages
           git fetch origin gh-pages
-          git show origin/gh-pages:index.yaml > .gh-pages/index.yaml || echo "index.yaml not found"
-      
-      - name: Package only new Apache versions
-        run: |
-          # EXISTING=$(yq '.entries.apache[].version' .gh-pages/index.yaml 2>/dev/null || echo "")
-          # LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
+          git worktree add .gh-pages origin/gh-pages || echo "No gh-pages branch yet"
 
-          # for VERSION in $LATEST; do
-          #   if echo "$EXISTING" | grep -qx "$VERSION"; then
-          #     echo "⏩ Skipping already packaged Apache $VERSION"
-          #   else
-          #     echo "📦 Packaging Apache $VERSION"
-          #     helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
-          #     helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
-          #     rm -rf .chart-tmp/apache
-          #   fi
-          # done
-          EXISTING=""  # temporarily override for testing
+      - name: Preserve existing .tgz files
+        run: |
+          cp .gh-pages/*.tgz .chart-out/ 2>/dev/null || echo "No previous charts to copy"
+          cp .gh-pages/index.yaml .gh-pages/index.yaml.bak 2>/dev/null || echo "No index.yaml to preserve"
+
+      - name: Determine existing Apache versions
+        id: apache-versions
+        run: |
+          EXISTING=$(yq -r '.entries.apache[].version' .gh-pages/index.yaml 2>/dev/null || echo "")
+          echo "existing_versions<<EOF" >> $GITHUB_OUTPUT
+          echo "$EXISTING" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Package new Apache versions
+        run: |
+          EXISTING="${{ steps.apache-versions.outputs.existing_versions }}"
           LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
-          
+
           for VERSION in $LATEST; do
-            echo "📦 Packaging Apache $VERSION"
-            helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
-            helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
-            rm -rf .chart-tmp/apache
+            if echo "$EXISTING" | grep -Fqx "$VERSION"; then
+              echo "⏩ Skipping already packaged Apache $VERSION"
+            else
+              echo "📦 Packaging Apache $VERSION"
+              helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
+              helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
+              rm -rf .chart-tmp/apache
+            fi
           done
 
-
-      - name: Package local charts (e.g. nginx-multiple)
+      - name: Package local charts
         run: |
           for chart in $(find helm -maxdepth 1 -mindepth 1 -type d); do
             helm package "$chart" -d .chart-out
           done
 
-      - name: Merge or generate index.yaml
+      - name: Show packaged charts
+        run: |
+          echo "📦 Packaged charts:"
+          ls -lh .chart-out/*.tgz || echo "⚠️ No charts found!"
+
+      - name: Generate or merge Helm index
         run: |
           cp .gh-pages/index.yaml .chart-out/index.yaml 2>/dev/null || true
           helm repo index .chart-out --url https://portainer.github.io/test-public-repo --merge .chart-out/index.yaml
 
-      - name: Deploy to gh-pages
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
