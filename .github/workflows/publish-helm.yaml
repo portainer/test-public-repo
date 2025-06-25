@@ -1,14 +1,14 @@
 name: Publish Helm Charts to GitHub Pages
 
 on:
-  schedule:
-    - cron: '0 3 * * *'  # Daily at 3 AM UTC
-  workflow_dispatch:      # ✅ Manual trigger
   push:
     branches:
       - master
     paths:
       - 'helm/**'
+  schedule:
+    - cron: '0 3 * * *'  # Daily at 3 AM UTC
+  workflow_dispatch:
 
 jobs:
   publish:
@@ -38,19 +38,18 @@ jobs:
           done
 
       - name: Create working directories
-        run: mkdir -p .chart-out .chart-tmp
+        run: mkdir -p .chart-out .chart-tmp .gh-pages
 
-      - name: Fetch existing gh-pages/index.yaml
+      - name: Fetch existing gh-pages index
         run: |
-          mkdir -p .gh-pages
           git fetch origin gh-pages
           git show origin/gh-pages:index.yaml > .gh-pages/index.yaml || echo "index.yaml not found"
-      
-      - name: Package only new Apache versions
+
+      - name: Package latest Apache charts if new
         run: |
           EXISTING=$(yq -r '.entries.apache[].version' .gh-pages/index.yaml 2>/dev/null || true)
           LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
-          
+
           for VERSION in $LATEST; do
             if echo "$EXISTING" | grep -Fqx "$VERSION"; then
               echo "⏩ Skipping already packaged Apache $VERSION"
@@ -62,20 +61,28 @@ jobs:
             fi
           done
 
-
-
-      - name: Package local charts (e.g. nginx-multiple)
+      - name: Package local charts
         run: |
           for chart in $(find helm -maxdepth 1 -mindepth 1 -type d); do
             helm package "$chart" -d .chart-out
           done
 
-      - name: Merge or generate index.yaml
+      - name: Show packaged charts
         run: |
-          cp .gh-pages/index.yaml .chart-out/index.yaml 2>/dev/null || true
-          helm repo index .chart-out --url https://portainer.github.io/test-public-repo --merge .chart-out/index.yaml
+          echo "📦 Packaged charts:"
+          ls -lh .chart-out/*.tgz || echo "⚠️ No charts found!"
 
-      - name: Deploy to gh-pages
+      - name: Generate or merge Helm index
+        run: |
+          if compgen -G ".chart-out/*.tgz" > /dev/null; then
+            cp .gh-pages/index.yaml .chart-out/index.yaml 2>/dev/null || true
+            helm repo index .chart-out --url https://portainer.github.io/test-public-repo --merge .chart-out/index.yaml
+          else
+            echo "❌ No packaged charts to publish. Aborting."
+            exit 1
+          fi
+
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
