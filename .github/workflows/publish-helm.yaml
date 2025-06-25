@@ -1,14 +1,14 @@
 name: Publish Helm Charts to GitHub Pages
 
 on:
+  schedule:
+    - cron: '0 3 * * *'  # Daily at 3 AM UTC
+  workflow_dispatch:      # ✅ Manual trigger
   push:
     branches:
       - master
     paths:
       - 'helm/**'
-  schedule:
-    - cron: '0 3 * * *'  # Daily at 3 AM UTC
-  workflow_dispatch:
 
 jobs:
   publish:
@@ -38,51 +38,52 @@ jobs:
           done
 
       - name: Create working directories
-        run: mkdir -p .chart-out .chart-tmp .gh-pages
+        run: mkdir -p .chart-out .chart-tmp
 
-      - name: Fetch existing gh-pages index
+      - name: Fetch existing gh-pages/index.yaml
         run: |
+          mkdir -p .gh-pages
           git fetch origin gh-pages
           git show origin/gh-pages:index.yaml > .gh-pages/index.yaml || echo "index.yaml not found"
-
-      - name: Package latest Apache charts if new
+      
+      - name: Package only new Apache versions
         run: |
-          EXISTING=$(yq -r '.entries.apache[].version' .gh-pages/index.yaml 2>/dev/null || true)
-          LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
+          # EXISTING=$(yq '.entries.apache[].version' .gh-pages/index.yaml 2>/dev/null || echo "")
+          # LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
 
+          # for VERSION in $LATEST; do
+          #   if echo "$EXISTING" | grep -qx "$VERSION"; then
+          #     echo "⏩ Skipping already packaged Apache $VERSION"
+          #   else
+          #     echo "📦 Packaging Apache $VERSION"
+          #     helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
+          #     helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
+          #     rm -rf .chart-tmp/apache
+          #   fi
+          # done
+          EXISTING=""  # temporarily override for testing
+          LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
+          
           for VERSION in $LATEST; do
-            if echo "$EXISTING" | grep -Fqx "$VERSION"; then
-              echo "⏩ Skipping already packaged Apache $VERSION"
-            else
-              echo "📦 Packaging Apache $VERSION"
-              helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
-              helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
-              rm -rf .chart-tmp/apache
-            fi
+            echo "📦 Packaging Apache $VERSION"
+            helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
+            helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
+            rm -rf .chart-tmp/apache
           done
 
-      - name: Package local charts
+
+      - name: Package local charts (e.g. nginx-multiple)
         run: |
           for chart in $(find helm -maxdepth 1 -mindepth 1 -type d); do
             helm package "$chart" -d .chart-out
           done
 
-      - name: Show packaged charts
+      - name: Merge or generate index.yaml
         run: |
-          echo "📦 Packaged charts:"
-          ls -lh .chart-out/*.tgz || echo "⚠️ No charts found!"
+          cp .gh-pages/index.yaml .chart-out/index.yaml 2>/dev/null || true
+          helm repo index .chart-out --url https://portainer.github.io/test-public-repo --merge .chart-out/index.yaml
 
-      - name: Generate or merge Helm index
-        run: |
-          if compgen -G ".chart-out/*.tgz" > /dev/null; then
-            cp .gh-pages/index.yaml .chart-out/index.yaml 2>/dev/null || true
-            helm repo index .chart-out --url https://portainer.github.io/test-public-repo --merge .chart-out/index.yaml
-          else
-            echo "❌ No packaged charts to publish. Aborting."
-            exit 1
-          fi
-
-      - name: Deploy to GitHub Pages
+      - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
