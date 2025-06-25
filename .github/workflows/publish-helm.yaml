@@ -62,7 +62,7 @@ jobs:
           #   fi
           # done
           EXISTING=""  # temporarily override for testing
-          LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 2)
+          LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
           
           for VERSION in $LATEST; do
             echo "📦 Packaging Apache $VERSION"
