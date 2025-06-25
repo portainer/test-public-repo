@@ -48,19 +48,29 @@ jobs:
       
       - name: Package only new Apache versions
         run: |
-          EXISTING=$(yq '.entries.apache[].version' .gh-pages/index.yaml 2>/dev/null || echo "")
-          LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
+          # EXISTING=$(yq '.entries.apache[].version' .gh-pages/index.yaml 2>/dev/null || echo "")
+          # LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
 
+          # for VERSION in $LATEST; do
+          #   if echo "$EXISTING" | grep -qx "$VERSION"; then
+          #     echo "⏩ Skipping already packaged Apache $VERSION"
+          #   else
+          #     echo "📦 Packaging Apache $VERSION"
+          #     helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
+          #     helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
+          #     rm -rf .chart-tmp/apache
+          #   fi
+          # done
+          EXISTING=""  # temporarily override for testing
+          LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 2)
+          
           for VERSION in $LATEST; do
-            if echo "$EXISTING" | grep -qx "$VERSION"; then
-              echo "⏩ Skipping already packaged Apache $VERSION"
-            else
-              echo "📦 Packaging Apache $VERSION"
-              helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
-              helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
-              rm -rf .chart-tmp/apache
-            fi
+            echo "📦 Packaging Apache $VERSION"
+            helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
+            helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
+            rm -rf .chart-tmp/apache
           done
+
 
       - name: Package local charts (e.g. nginx-multiple)
         run: |
