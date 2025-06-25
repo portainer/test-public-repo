@@ -14,7 +14,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.16
-    created: "2025-06-25T05:11:37.42486239Z"
+    created: "2025-06-25T05:26:57.078797433Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -24,7 +24,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: b9f3e4067df4bf62d81b65180e84efecad7f1b38f8cf691c0b432c3b74c74d8e
+    digest: 5bbb625c8ac4e829cf1dce05a8c7f817f204885e5c76c00799aa63aaace87504
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -56,7 +56,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.15
-    created: "2025-06-25T05:11:37.422101084Z"
+    created: "2025-06-25T05:26:57.076582088Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -66,7 +66,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: b0044d96e9484ff091f0969e6a628e3f3e1b472375dc0ceca35836280c2eee61
+    digest: a31ce92170f84f553dd17258a2a7cd80ef7e45e15d11cbcc45c36d672fc6cea6
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -98,7 +98,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.14
-    created: "2025-06-25T05:11:37.419823928Z"
+    created: "2025-06-25T05:26:57.073687928Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -108,7 +108,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: 0c402389c9f027ac9d59fd08d39cf29746e5320bb5eb9c5d2b7a48c4ac7cede9
+    digest: ee18a1d0561729286777107d285cc2360f473049c111f336f751d13328d387bf
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -140,7 +140,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.13
-    created: "2025-06-25T05:11:37.417587595Z"
+    created: "2025-06-25T05:26:57.071480177Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -150,7 +150,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: 213237c28fd5dceb12dd362ce41967fe9d0bb560aba5aeda8eae9bbba4b1f297
+    digest: 20d4d2b8b02cbfa06408ca346acfd552248dbc7273eaa1623719c437d355e087
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -182,7 +182,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.12
-    created: "2025-06-25T05:11:37.414772621Z"
+    created: "2025-06-25T05:26:57.069263931Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -192,7 +192,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: 9f9f1ed8a6c21d53a7a1003da69a1e77210c250822ec34affa2911f9511c0023
+    digest: 2659ffa325c1f537eaf74352c3fe30ac4871cb64c3ae6ca69fada5329d429fc3
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -224,7 +224,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.11
-    created: "2025-06-25T05:11:37.412534658Z"
+    created: "2025-06-25T05:26:57.065183399Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -234,7 +234,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: c27d6498e85028a6589a2695ab57ef01032f46873b18b943b5c002e1efc4642a
+    digest: 782692588e691b87ca74c506de2fac6344292773f2d2c70f0d4155d8288f2e91
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -266,7 +266,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.10
-    created: "2025-06-25T05:11:37.40937672Z"
+    created: "2025-06-25T05:26:57.062968815Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -276,7 +276,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: 75e368c266132b0583ecaf28ceb6a591e807ec5d72e26c02da5ce9b186c1db42
+    digest: 4960cdf7a9610389976352cc49b6c4b75c500b995060f97b5b46cd03d26407b6
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -308,7 +308,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.9
-    created: "2025-06-25T05:11:37.43213144Z"
+    created: "2025-06-25T05:26:57.089040983Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -318,7 +318,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: 22585af49e063ca8bfbf98f9a325aa778d82449e2611721e84d0ce316b2da72c
+    digest: 9b8fc90bbb402961570ef13c081dda91e49aa111843b9a04034b2fcb25c04d97
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -350,7 +350,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.8
-    created: "2025-06-25T05:11:37.429207784Z"
+    created: "2025-06-25T05:26:57.084804663Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -360,7 +360,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: c9e14f9be044fd6e3c3312176f588f4e42bb9d22761320e89a72746d845a2021
+    digest: 7add03f0d4c7c690c01ffa26f0d52f9bcda6410d1cd4aa5918608ea6dc9affb6
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -392,7 +392,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.7
-    created: "2025-06-25T05:11:37.427053586Z"
+    created: "2025-06-25T05:26:57.080983254Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -402,7 +402,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: 1887d9e8e8d49878475b54beb4efb6daced559815a9cb962897cb63d19c3b0be
+    digest: 147e59b5acd7526d396a207c34552b4ed3b27c1b0513c35ac69f1d097411ef3a
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -424,11 +424,11 @@ entries:
   nginx-multiple:
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2025-06-25T05:23:45.81480735Z"
+    created: "2025-06-25T05:26:57.089315212Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
-    digest: e787cfae80a9d2899214b4d6105150c4e9352a75bf12e708f2b1f134cc982b35
+    digest: 183fce9bd0d16124af453b9e5f370b00245da3bbbcfc1859849483047426d6ed
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.1.tgz
     version: 0.1.1
-generated: "2025-06-25T05:23:45.814474419Z"
+generated: "2025-06-25T05:26:57.060498768Z"
