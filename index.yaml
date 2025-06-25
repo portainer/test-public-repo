@@ -14,7 +14,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.16
-    created: "2025-06-19T07:28:12.874422723Z"
+    created: "2025-06-25T05:09:24.461427568Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -24,7 +24,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: 097969e9d36546de70f4d495767878be75d88a4304f6f796e30ee84680f02677
+    digest: 3988d734d4874a44b8795dfee6c9f5aa41f152c1ac299fd9c26f0e88fb0e5b8c
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -56,7 +56,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.15
-    created: "2025-06-19T07:28:12.872212988Z"
+    created: "2025-06-25T05:09:24.458311959Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -66,7 +66,7 @@ entries:
     description: Apache HTTP Server is an open-source HTTP server. The goal of this
       project is to provide a secure, efficient and extensible server that provides
       HTTP services in sync with the current HTTP standards.
-    digest: 51cc9218cacfd60d53ddddf91f438d1988e6442c33fee992cad36445241cc871
+    digest: 1508979928425fa2556ecadb8bff1e00a47b758cae782d90847f7ea9de5ea4b9
     home: https://bitnami.com
     icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
     keywords:
@@ -424,11 +424,11 @@ entries:
   nginx-multiple:
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2025-06-25T05:01:14.432339372Z"
+    created: "2025-06-25T05:09:24.46158825Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
-    digest: 62d7c037e7896848478d2f1741237d3e8bd975a1fb9583948c99d663bd4db4c6
+    digest: 2dd1d69f1d229a65b55e4f1748751fd4eb4daebaff087dd48628dff7ed6bb45e
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.1.tgz
     version: 0.1.1
-generated: "2025-06-25T05:01:14.432048699Z"
+generated: "2025-06-25T05:09:24.455776625Z"
