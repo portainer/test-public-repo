@@ -1,0 +1,22 @@
+{{- if gt (int .Values.deploymentCount) 0 }}
+{{- range $i := until (int .Values.deploymentCount) }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service-{{ $i }}
+  labels:
+    app.kubernetes.io/name: nginx-multiple
+    app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $i }}
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    app.kubernetes.io/name: nginx-multiple
+    app.kubernetes.io/instance: {{ $.Release.Name }}-{{ $i }}
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+{{- end }}
+{{- end }}
