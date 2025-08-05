@@ -14,7 +14,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.1
-    created: "2025-08-04T03:40:23.452619191Z"
+    created: "2025-08-05T03:35:20.917967073Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -56,7 +56,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.0
-    created: "2025-08-04T03:40:23.450404334Z"
+    created: "2025-08-05T03:35:20.915708208Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -98,7 +98,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.22
-    created: "2025-08-04T03:40:23.440512786Z"
+    created: "2025-08-05T03:35:20.905382338Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -140,7 +140,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.21
-    created: "2025-08-04T03:40:23.438247491Z"
+    created: "2025-08-05T03:35:20.903151898Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -182,7 +182,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.20
-    created: "2025-08-04T03:40:23.436032413Z"
+    created: "2025-08-05T03:35:20.900035722Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -224,7 +224,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.19
-    created: "2025-08-04T03:40:23.433463594Z"
+    created: "2025-08-05T03:35:20.896109711Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -266,7 +266,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.18
-    created: "2025-08-04T03:40:23.431003314Z"
+    created: "2025-08-05T03:35:20.892273592Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -308,7 +308,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.17
-    created: "2025-08-04T03:40:23.428829886Z"
+    created: "2025-08-05T03:35:20.88807158Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -350,7 +350,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.16
-    created: "2025-08-04T03:40:23.426072826Z"
+    created: "2025-08-05T03:35:20.885839898Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -392,7 +392,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.15
-    created: "2025-08-04T03:40:23.423897916Z"
+    created: "2025-08-05T03:35:20.883461022Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -434,7 +434,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.14
-    created: "2025-08-04T03:40:23.42166297Z"
+    created: "2025-08-05T03:35:20.880212933Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -476,7 +476,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.13
-    created: "2025-08-04T03:40:23.418790455Z"
+    created: "2025-08-05T03:35:20.876008085Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -518,7 +518,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.12
-    created: "2025-08-04T03:40:23.416594464Z"
+    created: "2025-08-05T03:35:20.871772277Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -560,7 +560,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.11
-    created: "2025-08-04T03:40:23.414418922Z"
+    created: "2025-08-05T03:35:20.86738642Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -602,7 +602,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.10
-    created: "2025-08-04T03:40:23.411476684Z"
+    created: "2025-08-05T03:35:20.865130571Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -644,7 +644,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.9
-    created: "2025-08-04T03:40:23.447568042Z"
+    created: "2025-08-05T03:35:20.912605672Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -686,7 +686,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.8
-    created: "2025-08-04T03:40:23.445404583Z"
+    created: "2025-08-05T03:35:20.910406202Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -728,7 +728,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.7
-    created: "2025-08-04T03:40:23.443242367Z"
+    created: "2025-08-05T03:35:20.907613159Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -760,20 +760,20 @@ entries:
   nginx-multiple:
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2025-08-04T03:40:23.452922506Z"
+    created: "2025-08-05T03:35:20.91829296Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
-    digest: 94fdadc6076a6901197004b62f2d18e0551b004eb7f484abb57c45d893b0afda
+    digest: 95136caf5c398c0191b36ab8e494788f9d8b731670feabb6811c429b87d152c6
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2025-08-04T03:40:23.452775623Z"
+    created: "2025-08-05T03:35:20.918143963Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
     digest: 4b0b9f70d81b28bf036a9c63b139a2c5d074a95799b752f34cd1d49fc66ff78d
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.1.tgz
     version: 0.1.1
-generated: "2025-08-04T03:40:23.408989351Z"
+generated: "2025-08-05T03:35:20.86264486Z"
