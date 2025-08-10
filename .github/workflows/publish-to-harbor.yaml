@@ -1,0 +1,71 @@
+name: Harbor Charts Sync
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * *" # runs daily at 2 AM
+
+jobs:
+  sync-harbor:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout repo to get local charts
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Install dependencies
+      - name: Set up Helm
+        uses: azure/setup-helm@v4.2.0
+        with:
+          version: v3.15.0
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      # Get latest ORAS version
+      - name: Get latest ORAS version
+        id: oras_version
+        run: |
+          ver=$(curl -s https://api.github.com/repos/oras-project/oras/releases/latest | jq -r .tag_name)
+          echo "version=${ver#v}" >> $GITHUB_OUTPUT
+
+      # Install ORAS
+      - name: Install ORAS CLI
+        uses: oras-project/setup-oras@v1
+        with:
+          version: ${{ steps.oras_version.outputs.version }}
+
+      # Login to Harbor
+      - name: Login to Harbor
+        run: |
+          echo "${{ secrets.HARBOR_ROBOT_TOKEN }}" | oras login harbor.portainercloud.io \
+            -u "${{ secrets.HARBOR_ROBOT_USER }}" --password-stdin
+
+      # Fetch Apache chart list from Harbor and keep only 15 latest
+      - name: Sync Apache charts
+        run: |
+          repo="harbor.portainercloud.io/helm/apache"
+          # List tags
+          oras repo tags $repo --output json | jq -r '.[]' | sort -V > all_tags.txt
+          head -n -15 all_tags.txt > old_tags.txt || true
+          tail -n 15 all_tags.txt > keep_tags.txt
+
+          # Delete old ones
+          while read tag; do
+            echo "Deleting $repo:$tag"
+            oras manifest delete "$repo:$tag" || true
+          done < old_tags.txt
+
+      # Package and push local nginx-multiple chart
+      - name: Package nginx-multiple chart
+        run: |
+          mkdir -p packaged
+          helm package charts/nginx-multiple --destination packaged
+
+      - name: Push nginx-multiple chart to Harbor
+        run: |
+          chart_file=$(ls packaged/nginx-multiple-*.tgz)
+          oras push harbor.portainercloud.io/helm/nginx-multiple:$(date +%Y.%m.%d) \
+            --artifact-type application/vnd.cncf.helm.chart.v1.tar+gzip \
+            $chart_file
