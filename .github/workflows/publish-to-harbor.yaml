@@ -54,7 +54,7 @@ jobs:
           helm repo update
 
           # Get all versions from Bitnami
-          bitnami_versions=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | sort -V)
+          bitnami_versions=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | sort -rV | head -n 15)
 
           # Get all versions from Harbor
           harbor_versions=$(oras repo tags $HARBOR_REPO | sort -V)
