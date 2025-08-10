@@ -40,7 +40,7 @@ jobs:
       - name: Login to Harbor
         run: |
           echo "${{ secrets.HARBOR_ROBOT_TOKEN }}" | oras login harbor.portainercloud.io \
-            -u "${{ secrets.HARBOR_ROBOT_USER }}" --password-stdin
+            -u 'robot$test-public-repo' --password-stdin
 
       # Fetch Apache chart list from Harbor and keep only 15 latest
       - name: Sync Apache charts
