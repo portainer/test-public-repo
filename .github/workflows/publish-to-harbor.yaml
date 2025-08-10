@@ -138,7 +138,7 @@ jobs:
         run: |
           set -euo pipefail
           HARBOR_REPO="harbor.portainercloud.io/helm/nginx-multiple"
-          LOCAL_VERSION=$(yq '.version' nginx-multiple/Chart.yaml)
+          LOCAL_VERSION=$(yq '.version' helm/nginx-multiple/Chart.yaml)
 
           echo "📦 Local chart version: $LOCAL_VERSION"
 
