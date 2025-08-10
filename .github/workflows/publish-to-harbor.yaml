@@ -10,11 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout repo to get local charts
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Install dependencies
       - name: Set up Helm
         uses: azure/setup-helm@v4.2.0
         with:
@@ -23,65 +21,116 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      # Get latest ORAS version
       - name: Get latest ORAS version
         id: oras_version
         run: |
           ver=$(curl -s https://api.github.com/repos/oras-project/oras/releases/latest | jq -r .tag_name)
           echo "version=${ver#v}" >> $GITHUB_OUTPUT
 
-      # Install ORAS
       - name: Install ORAS CLI
         uses: oras-project/setup-oras@v1
         with:
           version: ${{ steps.oras_version.outputs.version }}
 
-      # Login to Harbor
-      - name: Login to Harbor
+      # Login to Harbor with robot (single-quote around username prevents shell $ expansion)
+      - name: Login to Harbor (oras + helm)
         run: |
           echo "${{ secrets.HARBOR_ROBOT_TOKEN }}" | oras login harbor.portainercloud.io \
-            -u 'robot$test-public-repo' --password-stdin
+            -u '${{ secrets.HARBOR_ROBOT_USER }}' --password-stdin
+          # helm needs its own registry login so helm chart push works
+          echo "${{ secrets.HARBOR_ROBOT_TOKEN }}" | helm registry login harbor.portainercloud.io \
+            -u '${{ secrets.HARBOR_ROBOT_USER }}' --password-stdin
 
-      # Sync Apache charts from Bitnami to Harbor
-      - name: Sync Apache charts
+      - name: Sync Apache charts (Bitnami -> Harbor, keep latest 15)
         run: |
-          set -e
+          set -euo pipefail
+
           BITNAMI_REPO="https://charts.bitnami.com/bitnami"
+          # use the same repo variable shape you've used previously
           HARBOR_REPO="harbor.portainercloud.io/helm/apache/apache"
-
-          # Add Bitnami repo
-          helm repo add bitnami $BITNAMI_REPO
-          helm repo update
-
-          # Get all versions from Bitnami
-          bitnami_versions=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | sort -rV | head -n 15)
-
-          # Get all versions from Harbor
-          harbor_versions=$(oras repo tags $HARBOR_REPO | sort -V)
-
-          # Find versions missing in Harbor
-          missing_versions=$(comm -23 <(echo "$bitnami_versions") <(echo "$harbor_versions"))
+          KEEP=15
 
           mkdir -p packaged
 
-          # Push missing versions to Harbor (newest first)
-          for version in $(echo "$missing_versions" | sort -Vr); do
-            echo "Processing Apache chart version $version"
+          # ensure bitnami repo is available
+          helm repo add bitnami "$BITNAMI_REPO" >/dev/null 2>&1 || true
+          helm repo update
+
+          echo "→ Getting latest ${KEEP} versions from Bitnami for apache"
+          # newest-first list (desc sort), keep only 15
+          bitnami_versions=$(helm search repo bitnami/apache --versions -o json \
+            | jq -r '.[].version' \
+            | sort -rV \
+            | head -n ${KEEP} || true)
+
+          echo "Bitnami latest versions (newest first):"
+          echo "$bitnami_versions"
+
+          # fetch Harbor tags once
+          echo "→ Fetching existing tags from Harbor"
+          harbor_tags=$(oras repo tags "${HARBOR_REPO}/apache" 2>/dev/null || true)
+          # normalize (one per line)
+          echo "$harbor_tags" | sed '/^\s*$/d' > harbor_tags.txt
+
+          #
+          # For each version from Bitnami: push only if missing in Harbor
+          #
+          echo "→ Checking each Bitnami version against Harbor and pushing missing ones"
+          # iterate newest-first so newest pushed first
+          while IFS= read -r version; do
+            [[ -z "$version" ]] && continue
+            if echo "$harbor_tags" | grep -Fxq "$version"; then
+              echo "  - $version already in Harbor -> skip"
+              continue
+            fi
+
+            echo "  - $version missing in Harbor -> pulling & pushing"
+            # pull chart archive from Bitnami (creates packaged/apache-<ver>.tgz)
             helm pull bitnami/apache --version "$version" --destination packaged
-            oras push $HARBOR_REPO:$version packaged/apache-$version.tgz \
-              --artifact-type application/vnd.cncf.helm.chart.v1.tar+gzip
-          done
 
-          # Delete old versions (keep 15 newest)
-          all_versions=$(oras repo tags $HARBOR_REPO | sort -V)
-          old_versions=$(echo "$all_versions" | head -n -15 || true)
+            chart_file="packaged/apache-$version.tgz"
+            if [[ ! -f "$chart_file" ]]; then
+              echo "ERROR: expected $chart_file to exist, aborting" >&2
+              exit 1
+            fi
 
-          for version in $old_versions; do
-            echo "Deleting old version: $version"
-            oras manifest delete $HARBOR_REPO:$version || true
-          done
+            # Save & push using Helm OCI commands (requires helm registry login)
+            echo "    • helm chart save -> $HARBOR_REPO:{$version}"
+            helm chart save "$chart_file" "${HARBOR_REPO}/apache:$version"
+            echo "    • helm chart push -> ${HARBOR_REPO}/apache:$version"
+            helm chart push "${HARBOR_REPO}/apache:$version"
 
-      # Package and push local nginx-multiple chart
+            # update local harbor_tags variable to include the new version so we don't re-push in same run
+            harbor_tags="$(printf "%s\n%s" "$version" "$harbor_tags")"
+          done <<< "$bitnami_versions"
+
+          #
+          # Prune Harbor: keep latest KEEP versions and delete the rest
+          #
+          echo "→ Pruning Harbor, keeping only the latest ${KEEP} versions"
+
+          # list all versions in harbor (newest-first), fall back to empty if none
+          all_versions=$(oras repo tags "${HARBOR_REPO}/apache" 2>/dev/null || true)
+          # sort newest-first by semver-like order
+          all_versions_sorted=$(echo "$all_versions" | sort -rV)
+
+          # compute versions to delete: lines starting at KEEP+1
+          to_delete=$(echo "$all_versions_sorted" | sed -n "$((KEEP+1)),\$p" || true)
+
+          if [[ -z "${to_delete//[$'\t\r\n ']}" ]]; then
+            echo "No old versions to delete (Harbor has <= ${KEEP} versions)."
+          else
+            echo "Versions to delete:"
+            echo "$to_delete"
+            while IFS= read -r oldv; do
+              [[ -z "$oldv" ]] && continue
+              echo "  • Deleting ${HARBOR_REPO}/apache:$oldv"
+              # use oras manifest delete for the reference
+              oras manifest delete "${HARBOR_REPO}/apache:$oldv" || true
+            done <<< "$to_delete"
+          fi
+
+      # Package and push local nginx-multiple chart (kept as-is)
       - name: Package nginx-multiple chart
         run: |
           mkdir -p packaged
@@ -89,7 +138,17 @@ jobs:
 
       - name: Push nginx-multiple chart to Harbor
         run: |
-          chart_file=$(ls packaged/nginx-multiple-*.tgz)
-          oras push harbor.portainercloud.io/helm/nginx-multiple:$(date +%Y.%m.%d) \
-            --artifact-type application/vnd.cncf.helm.chart.v1.tar+gzip \
-            $chart_file
+          set -euo pipefail
+          chart_file=$(ls packaged/nginx-multiple-*.tgz | head -n 1)
+          if [[ -z "$chart_file" ]]; then
+            echo "No packaged nginx-multiple chart found, skipping push."
+            exit 0
+          fi
+
+          # extract version from packaged file name (nginx-multiple-<version>.tgz)
+          version=$(basename "$chart_file" | sed -E 's/^nginx-multiple-(.+)\.tgz$/\1/')
+          NGINX_REPO="harbor.portainercloud.io/helm/nginx-multiple"
+
+          echo "Saving and pushing nginx-multiple:$version to Harbor"
+          helm chart save "$chart_file" "${NGINX_REPO}:$version"
+          helm chart push "${NGINX_REPO}:$version"
