@@ -45,7 +45,7 @@ jobs:
       # Fetch Apache chart list from Harbor and keep only 15 latest
       - name: Sync Apache charts
         run: |
-          repo="harbor.portainercloud.io/helm/apache"
+          repo="harbor.portainercloud.io/helm/apache/apache"
           # List tags
           oras repo tags $repo --output json | jq -r '.[]' | sort -V > all_tags.txt
           head -n -15 all_tags.txt > old_tags.txt || true
