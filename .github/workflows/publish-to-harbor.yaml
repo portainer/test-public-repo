@@ -47,7 +47,7 @@ jobs:
 
           BITNAMI_REPO="https://charts.bitnami.com/bitnami"
           # use the same repo variable shape you've used previously
-          HARBOR_REPO="harbor.portainercloud.io/helm/apache/apache"
+          HARBOR_REPO="harbor.portainercloud.io/helm/apache"
           KEEP=15
 
           mkdir -p packaged
