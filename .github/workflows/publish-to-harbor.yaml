@@ -145,8 +145,7 @@ jobs:
 
           # extract version from packaged file name (nginx-multiple-<version>.tgz)
           version=$(basename "$chart_file" | sed -E 's/^nginx-multiple-(.+)\.tgz$/\1/')
-          NGINX_REPO="harbor.portainercloud.io/helm/nginx-multiple"
+          NGINX_REPO="harbor.portainercloud.io/helm"
 
           echo "Saving and pushing nginx-multiple:$version to Harbor"
-          helm chart save "$chart_file" "${NGINX_REPO}:$version"
-          helm chart push "${NGINX_REPO}:$version"
+          helm push $chart_file "${NGINX_REPO}"
