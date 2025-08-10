@@ -1,4 +1,4 @@
-name: Publish Helm Charts to GitHub Pages
+name: Publish Helm Charts to GitHub Pages and Harbor OCI
 
 on:
   push:
@@ -28,6 +28,14 @@ jobs:
         with:
           version: v3.14.0
 
+      - name: Install ORAS CLI (for OCI deletion)
+        run: |
+          curl -LO https://github.com/oras-project/oras/releases/latest/download/oras_$(uname -s | tr '[:upper:]' '[:lower:]')_amd64.tar.gz
+          mkdir -p oras-install/
+          tar -zxf oras_*.tar.gz -C oras-install/
+          sudo mv oras-install/oras /usr/local/bin/
+          oras version
+
       - name: Add Bitnami repo
         run: helm repo add bitnami https://charts.bitnami.com/bitnami && helm repo update
 
@@ -38,7 +46,7 @@ jobs:
           done
 
       - name: Create working directories
-        run: mkdir -p .chart-out .chart-tmp .gh-pages
+        run: mkdir -p .chart-out .chart-tmp .gh-pages .harbor-out
 
       - name: Fetch existing gh-pages
         run: |
@@ -50,7 +58,7 @@ jobs:
           cp .gh-pages/*.tgz .chart-out/ 2>/dev/null || echo "No previous charts to copy"
           cp .gh-pages/index.yaml .gh-pages/index.yaml.bak 2>/dev/null || echo "No index.yaml to preserve"
 
-      - name: Determine existing Apache versions
+      - name: Determine existing Apache versions (GH Pages)
         id: apache-versions
         run: |
           EXISTING=$(yq -r '.entries.apache[].version' .gh-pages/index.yaml 2>/dev/null || echo "")
@@ -58,7 +66,7 @@ jobs:
           echo "$EXISTING" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Package new Apache versions
+      - name: Package new Apache versions for GH Pages
         run: |
           EXISTING="${{ steps.apache-versions.outputs.existing_versions }}"
           LATEST=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | head -n 10)
@@ -74,16 +82,69 @@ jobs:
             fi
           done
 
-      - name: Package local charts
+      - name: Package local charts for GH Pages
         run: |
           for chart in $(find helm -maxdepth 1 -mindepth 1 -type d); do
             helm package "$chart" -d .chart-out
           done
 
-      - name: Show packaged charts
+      - name: Show packaged charts for GH Pages
         run: |
           echo "📦 Packaged charts:"
           ls -lh .chart-out/*.tgz || echo "⚠️ No charts found!"
+
+      - name: Push charts to Harbor OCI (Apache from Bitnami, Nginx-multiple from local)
+        run: |
+          set -e
+          echo "${{ secrets.HARBOR_ROBOT_TOKEN }}" | helm registry login harbor.portainercloud.io -u "${{ secrets.HARBOR_ROBOT_USER }}" --password-stdin
+
+          function push_chart() {
+            local repo_name=$1
+            local source_type=$2  # local or bitnami
+
+            echo "📥 Fetching existing versions for $repo_name from Harbor..."
+            EXISTING=$(helm search repo oci://harbor.portainercloud.io/helm/$repo_name --devel -o json 2>/dev/null | jq -r '.[].version' || echo "")
+
+            if [ "$source_type" == "bitnami" ]; then
+              LATEST=$(helm search repo bitnami/$repo_name --versions -o json | jq -r '.[].version' | head -n 15)
+              for VERSION in $LATEST; do
+                if echo "$EXISTING" | grep -Fqx "$VERSION"; then
+                  echo "⏩ Skipping $repo_name:$VERSION (already in Harbor)"
+                else
+                  echo "⬆️ Pulling & pushing $repo_name:$VERSION from Bitnami"
+                  helm pull bitnami/$repo_name --version "$VERSION" --untar --untardir .chart-tmp
+                  helm package .chart-tmp/$repo_name --version "$VERSION" --app-version "$VERSION" -d .harbor-out
+                  helm chart save ".harbor-out/$repo_name-$VERSION.tgz" harbor.portainercloud.io/helm/$repo_name:$VERSION
+                  helm chart push harbor.portainercloud.io/helm/$repo_name:$VERSION
+                  rm -rf .chart-tmp/$repo_name
+                fi
+              done
+            else
+              for tgz in $(find helm/$repo_name -type f -name "*.tgz" -o -path helm/$repo_name); do
+                if [ -f "$tgz" ]; then
+                  VERSION=$(basename "$tgz" | sed -E "s/^$repo_name-([0-9\.]+)\.tgz$/\1/")
+                  if echo "$EXISTING" | grep -Fqx "$VERSION"; then
+                    echo "⏩ Skipping $repo_name:$VERSION (already in Harbor)"
+                  else
+                    echo "⬆️ Pushing $repo_name:$VERSION from local"
+                    helm chart save "$tgz" harbor.portainercloud.io/helm/$repo_name:$VERSION
+                    helm chart push harbor.portainercloud.io/helm/$repo_name:$VERSION
+                  fi
+                fi
+              done
+            fi
+
+            echo "🧹 Keeping only latest 15 versions for $repo_name in Harbor..."
+            TO_DELETE=$(helm search repo oci://harbor.portainercloud.io/helm/$repo_name --devel -o json \
+              | jq -r '.[].version' | sort -Vr | tail -n +16)
+            for v in $TO_DELETE; do
+              echo "🗑 Deleting $repo_name:$v"
+              oras delete harbor.portainercloud.io/helm/$repo_name:$v || true
+            done
+          }
+
+          push_chart "apache" "bitnami"
+          push_chart "nginx-multiple" "local"
 
       - name: Generate or merge Helm index
         run: |
