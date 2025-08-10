@@ -42,20 +42,44 @@ jobs:
           echo "${{ secrets.HARBOR_ROBOT_TOKEN }}" | oras login harbor.portainercloud.io \
             -u 'robot$test-public-repo' --password-stdin
 
-      # Fetch Apache chart list from Harbor and keep only 15 latest
+      # Sync Apache charts from Bitnami to Harbor
       - name: Sync Apache charts
         run: |
-          repo="harbor.portainercloud.io/helm/apache/apache"
-          # List tags
-          oras repo tags $repo | sort -V > all_tags.txt
-          head -n -15 all_tags.txt > old_tags.txt || true
-          tail -n 15 all_tags.txt > keep_tags.txt
+          set -e
+          BITNAMI_REPO="https://charts.bitnami.com/bitnami"
+          HARBOR_REPO="harbor.portainercloud.io/helm/apache/apache"
 
-          # Delete old ones
-          while read tag; do
-            echo "Deleting $repo:$tag"
-            oras manifest delete "$repo:$tag" || true
-          done < old_tags.txt
+          # Add Bitnami repo
+          helm repo add bitnami $BITNAMI_REPO
+          helm repo update
+
+          # Get all versions from Bitnami
+          bitnami_versions=$(helm search repo bitnami/apache --versions -o json | jq -r '.[].version' | sort -V)
+
+          # Get all versions from Harbor
+          harbor_versions=$(oras repo tags $HARBOR_REPO | sort -V)
+
+          # Find versions missing in Harbor
+          missing_versions=$(comm -23 <(echo "$bitnami_versions") <(echo "$harbor_versions"))
+
+          mkdir -p packaged
+
+          # Push missing versions to Harbor (newest first)
+          for version in $(echo "$missing_versions" | sort -Vr); do
+            echo "Processing Apache chart version $version"
+            helm pull bitnami/apache --version "$version" --destination packaged
+            oras push $HARBOR_REPO:$version packaged/apache-$version.tgz \
+              --artifact-type application/vnd.cncf.helm.chart.v1.tar+gzip
+          done
+
+          # Delete old versions (keep 15 newest)
+          all_versions=$(oras repo tags $HARBOR_REPO | sort -V)
+          old_versions=$(echo "$all_versions" | head -n -15 || true)
+
+          for version in $old_versions; do
+            echo "Deleting old version: $version"
+            oras manifest delete $HARBOR_REPO:$version || true
+          done
 
       # Package and push local nginx-multiple chart
       - name: Package nginx-multiple chart
