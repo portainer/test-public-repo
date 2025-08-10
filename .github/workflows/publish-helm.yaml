@@ -28,13 +28,11 @@ jobs:
         with:
           version: v3.14.0
 
-      - name: Install ORAS CLI (for OCI deletion)
-        run: |
-          curl -LO https://github.com/oras-project/oras/releases/latest/download/oras_$(uname -s | tr '[:upper:]' '[:lower:]')_amd64.tar.gz
-          mkdir -p oras-install/
-          tar -zxf oras_*.tar.gz -C oras-install/
-          sudo mv oras-install/oras /usr/local/bin/
-          oras version
+      - name: Install ORAS CLI
+        uses: oras-project/setup-oras@v1
+        with:
+          version: latest
+
 
       - name: Add Bitnami repo
         run: helm repo add bitnami https://charts.bitnami.com/bitnami && helm repo update
@@ -157,3 +155,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .chart-out
           publish_branch: gh-pages
+
