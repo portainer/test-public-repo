@@ -28,10 +28,16 @@ jobs:
         with:
           version: v3.14.0
 
+      - name: Get latest ORAS version
+        id: oras_version
+        run: |
+          ver=$(curl -s https://api.github.com/repos/oras-project/oras/releases/latest | jq -r .tag_name)
+          echo "version=${ver#v}" >> $GITHUB_OUTPUT
+
       - name: Install ORAS CLI
         uses: oras-project/setup-oras@v1
         with:
-          version: latest
+          version: ${{ steps.oras_version.outputs.version }}
 
 
       - name: Add Bitnami repo
@@ -155,4 +161,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .chart-out
           publish_branch: gh-pages
+
 
