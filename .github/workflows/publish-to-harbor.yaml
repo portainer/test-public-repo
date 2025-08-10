@@ -148,4 +148,4 @@ jobs:
           NGINX_REPO="harbor.portainercloud.io/helm"
 
           echo "Saving and pushing nginx-multiple:$version to Harbor"
-          helm push $chart_file "${NGINX_REPO}"
+          helm push $chart_file "oci://${NGINX_REPO}"
