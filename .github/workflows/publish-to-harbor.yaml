@@ -96,7 +96,7 @@ jobs:
 
             # Push using Helm OCI commands (requires helm registry login)
             echo "    • helm push -> ${HARBOR_REPO}/apache:$version"
-            helm push "$chart_file" "oci://${HARBOR_REPO}/apache:$version"
+            helm push "$chart_file" "oci://${HARBOR_REPO}"
 
             # update local harbor_tags variable to include the new version so we don't re-push in same run
             harbor_tags="$(printf "%s\n%s" "$version" "$harbor_tags")"
