@@ -47,7 +47,7 @@ jobs:
         run: |
           repo="harbor.portainercloud.io/helm/apache/apache"
           # List tags
-          oras repo tags $repo --output json | jq -r '.[]' | sort -V > all_tags.txt
+          oras repo tags $repo | sort -V > all_tags.txt
           head -n -15 all_tags.txt > old_tags.txt || true
           tail -n 15 all_tags.txt > keep_tags.txt
 
@@ -61,7 +61,7 @@ jobs:
       - name: Package nginx-multiple chart
         run: |
           mkdir -p packaged
-          helm package charts/nginx-multiple --destination packaged
+          helm package helm/nginx-multiple --destination packaged
 
       - name: Push nginx-multiple chart to Harbor
         run: |
