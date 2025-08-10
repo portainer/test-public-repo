@@ -124,7 +124,7 @@ jobs:
               [[ -z "$oldv" ]] && continue
               echo "  • Deleting ${HARBOR_REPO}/apache:$oldv"
               # use oras manifest delete for the reference
-              oras manifest delete "${HARBOR_REPO}/apache:$oldv" || true
+              oras manifest delete "${HARBOR_REPO}/apache:$oldv" --force || true
             done <<< "$to_delete"
           fi
 
