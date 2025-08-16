@@ -7,6 +7,90 @@ entries:
         - name: apache
           image: docker.io/bitnami/apache:2.4.65-debian-12-r2
         - name: apache-exporter
+          image: docker.io/bitnami/apache-exporter:1.0.10-debian-12-r54
+        - name: git
+          image: docker.io/bitnami/git:2.50.1-debian-12-r30
+      licenses: Apache-2.0
+      tanzuCategory: service
+    apiVersion: v2
+    appVersion: 11.4.27
+    created: "2025-08-16T03:25:05.310004552Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Apache HTTP Server is an open-source HTTP server. The goal of this
+      project is to provide a secure, efficient and extensible server that provides
+      HTTP services in sync with the current HTTP standards.
+    digest: 4576b0c161fbf32a1a1cd8284d9d02e5c5b1748346f21355295c3bb605816b21
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
+    keywords:
+    - apache
+    - http
+    - https
+    - www
+    - web
+    - reverse proxy
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: apache
+    sources:
+    - https://github.com/bitnami/charts/tree/main/bitnami/apache
+    urls:
+    - https://portainer.github.io/test-public-repo/apache-11.4.27.tgz
+    version: 11.4.27
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: apache
+          image: docker.io/bitnami/apache:2.4.65-debian-12-r2
+        - name: apache-exporter
+          image: docker.io/bitnami/apache-exporter:1.0.10-debian-12-r44
+        - name: git
+          image: docker.io/bitnami/git:2.50.1-debian-12-r22
+      licenses: Apache-2.0
+      tanzuCategory: service
+    apiVersion: v2
+    appVersion: 11.4.21
+    created: "2025-08-16T03:25:05.307587531Z"
+    dependencies:
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      tags:
+      - bitnami-common
+      version: 2.x.x
+    description: Apache HTTP Server is an open-source HTTP server. The goal of this
+      project is to provide a secure, efficient and extensible server that provides
+      HTTP services in sync with the current HTTP standards.
+    digest: a0064722fa8368bbbab60d8be3dca78290e49f65f660f009b548e940e625bccc
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/apache/img/apache-stack-220x234.png
+    keywords:
+    - apache
+    - http
+    - https
+    - www
+    - web
+    - reverse proxy
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: apache
+    sources:
+    - https://github.com/bitnami/charts/tree/main/bitnami/apache
+    urls:
+    - https://portainer.github.io/test-public-repo/apache-11.4.21.tgz
+    version: 11.4.21
+  - annotations:
+      category: Infrastructure
+      images: |
+        - name: apache
+          image: docker.io/bitnami/apache:2.4.65-debian-12-r2
+        - name: apache-exporter
           image: docker.io/bitnami/apache-exporter:1.0.10-debian-12-r27
         - name: git
           image: docker.io/bitnami/git:2.50.1-debian-12-r11
@@ -14,7 +98,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.14
-    created: "2025-08-15T03:29:52.410166995Z"
+    created: "2025-08-16T03:25:05.300389147Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -56,7 +140,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.7
-    created: "2025-08-15T03:29:52.424672427Z"
+    created: "2025-08-16T03:25:05.323879Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -98,7 +182,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.6
-    created: "2025-08-15T03:29:52.422431227Z"
+    created: "2025-08-16T03:25:05.321512032Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -140,7 +224,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.5
-    created: "2025-08-15T03:29:52.419561405Z"
+    created: "2025-08-16T03:25:05.317727793Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -182,7 +266,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.4
-    created: "2025-08-15T03:29:52.417391077Z"
+    created: "2025-08-16T03:25:05.315507329Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -224,7 +308,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.3
-    created: "2025-08-15T03:29:52.415190273Z"
+    created: "2025-08-16T03:25:05.313273941Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -266,7 +350,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.2
-    created: "2025-08-15T03:29:52.412363472Z"
+    created: "2025-08-16T03:25:05.304471742Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -308,7 +392,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.1
-    created: "2025-08-15T03:29:52.407924622Z"
+    created: "2025-08-16T03:25:05.298034252Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -350,7 +434,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.0
-    created: "2025-08-15T03:29:52.405061536Z"
+    created: "2025-08-16T03:25:05.295794181Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -392,7 +476,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.22
-    created: "2025-08-15T03:29:52.395567796Z"
+    created: "2025-08-16T03:25:05.280564177Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -434,7 +518,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.21
-    created: "2025-08-15T03:29:52.392323073Z"
+    created: "2025-08-16T03:25:05.2784063Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -476,7 +560,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.20
-    created: "2025-08-15T03:29:52.389288101Z"
+    created: "2025-08-16T03:25:05.276194563Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -518,7 +602,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.19
-    created: "2025-08-15T03:29:52.387094891Z"
+    created: "2025-08-16T03:25:05.273046984Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -560,7 +644,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.18
-    created: "2025-08-15T03:29:52.384374346Z"
+    created: "2025-08-16T03:25:05.270870132Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -602,7 +686,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.17
-    created: "2025-08-15T03:29:52.382218827Z"
+    created: "2025-08-16T03:25:05.268654988Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -644,7 +728,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.16
-    created: "2025-08-15T03:29:52.380034964Z"
+    created: "2025-08-16T03:25:05.264401563Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -686,7 +770,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.15
-    created: "2025-08-15T03:29:52.377124997Z"
+    created: "2025-08-16T03:25:05.259792529Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -728,7 +812,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.14
-    created: "2025-08-15T03:29:52.374943258Z"
+    created: "2025-08-16T03:25:05.255605225Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -770,7 +854,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.13
-    created: "2025-08-15T03:29:52.371832005Z"
+    created: "2025-08-16T03:25:05.250204134Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -812,7 +896,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.12
-    created: "2025-08-15T03:29:52.369665465Z"
+    created: "2025-08-16T03:25:05.246475218Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -854,7 +938,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.11
-    created: "2025-08-15T03:29:52.367424394Z"
+    created: "2025-08-16T03:25:05.242779274Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -896,7 +980,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.10
-    created: "2025-08-15T03:29:52.364427724Z"
+    created: "2025-08-16T03:25:05.237970836Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -938,7 +1022,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.9
-    created: "2025-08-15T03:29:52.40289207Z"
+    created: "2025-08-16T03:25:05.29201967Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -980,7 +1064,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.8
-    created: "2025-08-15T03:29:52.400696064Z"
+    created: "2025-08-16T03:25:05.288403755Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -1022,7 +1106,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.3.7
-    created: "2025-08-15T03:29:52.397752832Z"
+    created: "2025-08-16T03:25:05.284715977Z"
     dependencies:
     - name: common
       repository: oci://registry-1.docker.io/bitnamicharts
@@ -1054,20 +1138,20 @@ entries:
   nginx-multiple:
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2025-08-15T03:29:52.424980406Z"
+    created: "2025-08-16T03:25:05.324224436Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
-    digest: 274f0cf981d8e935498c252d1b204572ae9aee3ac886d0809f5c5a0af469f445
+    digest: aa79b555c92bf3840a6baf57975bb26ce8d93e7075a4319a1ef85ae487450ab0
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2025-08-15T03:29:52.42483355Z"
+    created: "2025-08-16T03:25:05.324042035Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
     digest: 4b0b9f70d81b28bf036a9c63b139a2c5d074a95799b752f34cd1d49fc66ff78d
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.1.tgz
     version: 0.1.1
-generated: "2025-08-15T03:29:52.361878515Z"
+generated: "2025-08-16T03:25:05.233438277Z"
