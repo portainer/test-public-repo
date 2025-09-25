@@ -85,8 +85,15 @@ jobs:
             fi
 
             echo "  - $version missing in Harbor -> pulling & pushing"
-            # pull chart archive from Bitnami (creates packaged/apache-<ver>.tgz)
-            helm pull bitnami/apache --version "$version" --destination packaged
+            # pull and modify chart to remove OCI registry dependency
+            helm pull bitnami/apache --version "$version" --untar --destination .chart-tmp
+
+            # Modify Chart.yaml to remove OCI registry dependency
+            sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: oci://harbor.portainercloud.io/helm|g' .chart-tmp/apache/Chart.yaml
+
+            # Repackage the modified chart
+            helm package .chart-tmp/apache --destination packaged
+            rm -rf .chart-tmp/apache
 
             chart_file="packaged/apache-$version.tgz"
             if [[ ! -f "$chart_file" ]]; then
@@ -126,6 +133,24 @@ jobs:
               # use oras manifest delete for the reference
               oras manifest delete "${HARBOR_REPO}/apache:$oldv" --force || true
             done <<< "$to_delete"
+          fi
+
+      - name: Sync common dependency chart to Harbor
+        run: |
+          set -euo pipefail
+          HARBOR_REPO="harbor.portainercloud.io/helm"
+
+          # Get latest common chart version
+          LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
+
+          # Check if it exists in Harbor
+          if ! oras repo tags "${HARBOR_REPO}/common" 2>/dev/null | grep -Fxq "$LATEST_COMMON"; then
+            echo "📦 Pushing common chart version $LATEST_COMMON to Harbor"
+            helm pull bitnami/common --version "$LATEST_COMMON" --destination packaged
+            chart_file="packaged/common-$LATEST_COMMON.tgz"
+            helm push "$chart_file" "oci://${HARBOR_REPO}"
+          else
+            echo "✅ Common chart $LATEST_COMMON already exists in Harbor"
           fi
 
       # Package and push local nginx-multiple chart (kept as-is)

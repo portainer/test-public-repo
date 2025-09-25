@@ -69,10 +69,21 @@ jobs:
             else
               echo "📦 Packaging Apache $VERSION"
               helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
+
+              # Modify Chart.yaml to remove OCI registry dependency
+              sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: https://portainer.github.io/test-public-repo|g' .chart-tmp/apache/Chart.yaml
+
               helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
               rm -rf .chart-tmp/apache
             fi
           done
+
+      - name: Package common dependency chart
+        run: |
+          # Package the common chart that Apache depends on
+          LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
+          echo "📦 Packaging common chart version $LATEST_COMMON"
+          helm pull bitnami/common --version "$LATEST_COMMON" -d .chart-out
 
       - name: Package local charts
         run: |
