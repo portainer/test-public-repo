@@ -70,8 +70,9 @@ jobs:
               echo "📦 Packaging Apache $VERSION"
               helm pull bitnami/apache --version "$VERSION" --untar --untardir .chart-tmp
 
-              # Modify Chart.yaml to remove OCI registry dependency
+              # Modify Chart.yaml to remove OCI registry dependency and remove Chart.lock
               sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: https://portainer.github.io/test-public-repo|g' .chart-tmp/apache/Chart.yaml
+              rm -f .chart-tmp/apache/Chart.lock
 
               helm package .chart-tmp/apache --version "$VERSION" --app-version "$VERSION" -d .chart-out
               rm -rf .chart-tmp/apache

@@ -88,8 +88,9 @@ jobs:
             # pull and modify chart to remove OCI registry dependency
             helm pull bitnami/apache --version "$version" --untar --destination .chart-tmp
 
-            # Modify Chart.yaml to remove OCI registry dependency
+            # Modify Chart.yaml to remove OCI registry dependency and remove Chart.lock
             sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: oci://harbor.portainercloud.io/helm|g' .chart-tmp/apache/Chart.yaml
+            rm -f .chart-tmp/apache/Chart.lock
 
             # Repackage the modified chart
             helm package .chart-tmp/apache --destination packaged
