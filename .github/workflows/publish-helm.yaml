@@ -45,15 +45,15 @@ jobs:
           git fetch origin gh-pages
           git worktree add .gh-pages origin/gh-pages || echo "No gh-pages branch yet"
 
-      - name: Preserve existing .tgz files
+      - name: Preserve existing charts
         run: |
-          cp .gh-pages/*.tgz .chart-out/ 2>/dev/null || echo "No previous charts to copy"
-          cp .gh-pages/index.yaml .gh-pages/index.yaml.bak 2>/dev/null || echo "No index.yaml to preserve"
+          cp .gh-pages/*.tgz .chart-out/ 2>/dev/null || true
+          cp .gh-pages/index.yaml .chart-out/index.yaml 2>/dev/null || true
 
       - name: Determine existing Apache versions
         id: apache-versions
         run: |
-          EXISTING=$(yq -r '.entries.apache[].version' .gh-pages/index.yaml 2>/dev/null || echo "")
+          EXISTING=$(yq -r '.entries.apache[].version' .chart-out/index.yaml 2>/dev/null || echo "")
           echo "existing_versions<<EOF" >> $GITHUB_OUTPUT
           echo "$EXISTING" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
@@ -77,18 +77,36 @@ jobs:
       - name: Package local charts
         run: |
           for chart in $(find helm -maxdepth 1 -mindepth 1 -type d); do
+            helm dependency update "$chart" || true
             helm package "$chart" -d .chart-out
           done
 
       - name: Show packaged charts
-        run: |
-          echo "📦 Packaged charts:"
-          ls -lh .chart-out/*.tgz || echo "⚠️ No charts found!"
+        run: ls -lh .chart-out/*.tgz || echo "⚠️ No charts found!"
 
-      - name: Generate or merge Helm index
+      - name: Generate merged Helm index
         run: |
-          cp .gh-pages/index.yaml .chart-out/index.yaml 2>/dev/null || true
-          helm repo index .chart-out --url https://portainer.github.io/test-public-repo --merge .chart-out/index.yaml
+          helm repo index .chart-out \
+            --url https://portainer.github.io/test-public-repo \
+            --merge .chart-out/index.yaml
+
+      - name: Prune old chart versions (keep latest 10 per chart)
+        run: |
+          set -euo pipefail
+          for chart in $(yq -r '.entries | keys[]' .chart-out/index.yaml); do
+            versions=$(yq -r ".entries[\"$chart\"][].version" .chart-out/index.yaml | sort -rV)
+            keep=$(echo "$versions" | head -n 10)
+            delete=$(comm -23 <(echo "$versions") <(echo "$keep") || true)
+
+            for v in $delete; do
+              echo "🗑 Removing $chart-$v.tgz"
+              rm -f .chart-out/$chart-$v.tgz
+            done
+          done
+
+          # regenerate index cleanly after pruning
+          helm repo index .chart-out \
+            --url https://portainer.github.io/test-public-repo
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
