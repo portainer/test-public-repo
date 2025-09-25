@@ -1,0 +1,43 @@
+name: Harbor Charts Cleanup
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_cleanup:
+        description: 'Type "DELETE" to confirm cleanup of ALL Apache and common charts from Harbor'
+        required: true
+        default: ''
+
+jobs:
+  cleanup-harbor:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm_cleanup == 'DELETE'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get latest ORAS version
+        id: oras_version
+        run: |
+          ver=$(curl -s https://api.github.com/repos/oras-project/oras/releases/latest | jq -r .tag_name)
+          echo "version=${ver#v}" >> $GITHUB_OUTPUT
+
+      - name: Install ORAS CLI
+        uses: oras-project/setup-oras@v1
+        with:
+          version: ${{ steps.oras_version.outputs.version }}
+
+      - name: Run Harbor cleanup script
+        env:
+          HARBOR_ROBOT_USER: ${{ secrets.HARBOR_ROBOT_USER }}
+          HARBOR_ROBOT_TOKEN: ${{ secrets.HARBOR_ROBOT_TOKEN }}
+        run: |
+          chmod +x cleanup-harbor.sh
+          ./cleanup-harbor.sh
+
+      - name: Summary
+        run: |
+          echo "🧹 Harbor cleanup completed successfully!"
+          echo "All Apache and common charts have been removed from Harbor registry."
+          echo "You can now run the 'Harbor Charts Sync' workflow to rebuild with updated metadata."
