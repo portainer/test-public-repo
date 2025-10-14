@@ -1,0 +1,4 @@
+# Number of nginx deployments to create
+deploymentCount: 2
+
+
