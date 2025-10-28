@@ -14,7 +14,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.29
-    created: "2025-10-27T03:29:50.228846084Z"
+    created: "2025-10-28T03:22:10.133531147Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -56,7 +56,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.28
-    created: "2025-10-27T03:29:50.224328696Z"
+    created: "2025-10-28T03:22:10.130585695Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -98,7 +98,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.27
-    created: "2025-10-27T03:29:50.222105768Z"
+    created: "2025-10-28T03:22:10.128381657Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -140,7 +140,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.21
-    created: "2025-10-27T03:29:50.218618987Z"
+    created: "2025-10-28T03:22:10.126165016Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -182,7 +182,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.14
-    created: "2025-10-27T03:29:50.2163541Z"
+    created: "2025-10-28T03:22:10.123150187Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -224,7 +224,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.7
-    created: "2025-10-27T03:29:50.244867007Z"
+    created: "2025-10-28T03:22:10.145160786Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -266,7 +266,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.6
-    created: "2025-10-27T03:29:50.242686329Z"
+    created: "2025-10-28T03:22:10.142981906Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -308,7 +308,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.5
-    created: "2025-10-27T03:29:50.240460115Z"
+    created: "2025-10-28T03:22:10.140763621Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -350,7 +350,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.4
-    created: "2025-10-27T03:29:50.237097237Z"
+    created: "2025-10-28T03:22:10.137897955Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -392,7 +392,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 11.4.3
-    created: "2025-10-27T03:29:50.232953126Z"
+    created: "2025-10-28T03:22:10.135742128Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -427,7 +427,7 @@ entries:
       licenses: Apache-2.0
     apiVersion: v2
     appVersion: 2.31.4
-    created: "2025-10-27T03:29:50.246267066Z"
+    created: "2025-10-28T03:22:10.146449269Z"
     description: A Library Helm Chart for grouping common logic between bitnami charts.
       This chart is not deployable by itself.
     digest: 91311247f88ab95dd202d03971294561ff70bc65fd45e5de7705eb91fd0f310c
@@ -452,20 +452,20 @@ entries:
   nginx-multiple:
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2025-10-27T03:29:50.24680381Z"
+    created: "2025-10-28T03:22:10.146776141Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
-    digest: 06c4121b5534c71d7cc2f1b637e09bfdc670f7052ab789a81b0d861539c89177
+    digest: d8a7aacabe4840a19d008c0a236b4f6da6e712bf8af82e7ad0aeb2b63006446e
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2025-10-27T03:29:50.246646035Z"
+    created: "2025-10-28T03:22:10.146628024Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
     digest: 4b0b9f70d81b28bf036a9c63b139a2c5d074a95799b752f34cd1d49fc66ff78d
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.1.tgz
     version: 0.1.1
-generated: "2025-10-27T03:29:50.213911031Z"
+generated: "2025-10-28T03:22:10.12067913Z"
