@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Harbor cleanup script - delete all Redis charts from Harbor registry
-HARBOR_REPO="harbor.portainercloud.io/helm/redis"
+HARBOR_REPO="harbor.portainercloud.io/helm"
 
 echo "🧹 Cleaning up all Redis charts from Harbor..."
 
