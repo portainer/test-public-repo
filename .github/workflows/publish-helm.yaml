@@ -92,8 +92,13 @@ jobs:
             if echo "$EXISTING_COMMON" | grep -Fqx "$VERSION"; then
               echo "⏩ Skipping already packaged common $VERSION"
             else
-              echo "📦 Packaging common chart version $VERSION"
-              helm pull bitnami/common --version "$VERSION" -d .chart-out
+              echo "📦 Attempting to package common chart version $VERSION"
+              if helm pull bitnami/common --version "$VERSION" -d .chart-out 2>/dev/null; then
+                echo "✅ Successfully packaged common $VERSION"
+              else
+                echo "⚠️ Warning: common $VERSION not available in Bitnami repo (it may have been removed)"
+                echo "   The existing packaged version in gh-pages will be preserved"
+              fi
             fi
           done
 

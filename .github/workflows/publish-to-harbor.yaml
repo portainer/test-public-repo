@@ -158,10 +158,15 @@ jobs:
             if echo "$EXISTING_COMMON" | grep -Fxq "$VERSION"; then
               echo "✅ Common chart $VERSION already exists in Harbor"
             else
-              echo "📦 Pushing common chart version $VERSION to Harbor"
-              helm pull bitnami/common --version "$VERSION" --destination packaged
-              chart_file="packaged/common-$VERSION.tgz"
-              helm push "$chart_file" "oci://${HARBOR_REPO}"
+              echo "📦 Attempting to push common chart version $VERSION to Harbor"
+              if helm pull bitnami/common --version "$VERSION" --destination packaged 2>/dev/null; then
+                chart_file="packaged/common-$VERSION.tgz"
+                helm push "$chart_file" "oci://${HARBOR_REPO}"
+                echo "✅ Successfully pushed common $VERSION to Harbor"
+              else
+                echo "⚠️ Warning: common $VERSION not available in Bitnami repo (it may have been removed)"
+                echo "   Skipping this version - ensure it exists in Harbor from previous runs"
+              fi
             fi
           done
 
