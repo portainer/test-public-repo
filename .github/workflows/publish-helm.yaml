@@ -79,12 +79,23 @@ jobs:
             fi
           done
 
-      - name: Package common dependency chart
+      - name: Package common dependency charts
         run: |
-          # Package the common chart that Redis depends on
-          LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
-          echo "📦 Packaging common chart version $LATEST_COMMON"
-          helm pull bitnami/common --version "$LATEST_COMMON" -d .chart-out
+          # Determine all required common versions from packaged Redis charts
+          REQUIRED_COMMON=$(yq -r '.entries.redis[].dependencies[]? | select(.name == "common") | .version' .chart-out/index.yaml 2>/dev/null | sort -u || echo "")
+
+          # Get existing common versions to avoid re-packaging
+          EXISTING_COMMON=$(yq -r '.entries.common[]?.version' .chart-out/index.yaml 2>/dev/null || echo "")
+
+          # Package required common versions
+          for VERSION in $REQUIRED_COMMON; do
+            if echo "$EXISTING_COMMON" | grep -Fqx "$VERSION"; then
+              echo "⏩ Skipping already packaged common $VERSION"
+            else
+              echo "📦 Packaging common chart version $VERSION"
+              helm pull bitnami/common --version "$VERSION" -d .chart-out
+            fi
+          done
 
       - name: Package local charts
         run: |
@@ -117,6 +128,30 @@ jobs:
           done
 
           # regenerate index cleanly after pruning
+          helm repo index .chart-out \
+            --url https://portainer.github.io/test-public-repo
+
+      - name: Cleanup unused common chart versions
+        run: |
+          set -euo pipefail
+
+          # Get all common versions currently in repository
+          EXISTING_COMMON=$(yq -r '.entries.common[]?.version' .chart-out/index.yaml 2>/dev/null | sort -u || echo "")
+
+          # Get all common versions required by Redis charts
+          REQUIRED_COMMON=$(yq -r '.entries.redis[].dependencies[]? | select(.name == "common") | .version' .chart-out/index.yaml 2>/dev/null | sort -u || echo "")
+
+          # Remove common versions that are not required
+          for VERSION in $EXISTING_COMMON; do
+            if echo "$REQUIRED_COMMON" | grep -Fqx "$VERSION"; then
+              echo "✅ Keeping common $VERSION (required by Redis)"
+            else
+              echo "🗑 Removing unused common $VERSION"
+              rm -f .chart-out/common-$VERSION.tgz
+            fi
+          done
+
+          # regenerate index after cleanup
           helm repo index .chart-out \
             --url https://portainer.github.io/test-public-repo
 
