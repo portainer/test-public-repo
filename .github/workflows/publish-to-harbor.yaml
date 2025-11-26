@@ -88,8 +88,15 @@ jobs:
             # pull and modify chart to remove OCI registry dependency
             helm pull bitnami/redis --version "$version" --untar --destination .chart-tmp
 
-            # Modify Chart.yaml to remove OCI registry dependency and remove Chart.lock
+            # Get the latest available common version from Bitnami
+            LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
+            echo "    Using common version: $LATEST_COMMON"
+
+            # Modify Chart.yaml to:
+            # 1. Change repository to Harbor OCI registry
+            # 2. Update common version to latest available
             sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: oci://harbor.portainercloud.io/helm|g' .chart-tmp/redis/Chart.yaml
+            sed -i "/name: common/,/version:/ s/version: .*/version: $LATEST_COMMON/" .chart-tmp/redis/Chart.yaml
             rm -f .chart-tmp/redis/Chart.lock
 
             # Repackage the modified chart
@@ -141,41 +148,29 @@ jobs:
           set -euo pipefail
           HARBOR_REPO="harbor.portainercloud.io/helm"
 
-          # Get all common versions required by the Redis charts we just pushed
-          REQUIRED_COMMON=$(for file in packaged/redis-*.tgz; do
-            [[ -f "$file" ]] || continue
-            tar -xzOf "$file" redis/Chart.yaml | grep -A 5 "name: common" | grep "version:" | awk '{print $2}'
-          done | sort -u)
+          # Get the latest available common version (same as used in Redis charts)
+          LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
+          echo "Latest common version: $LATEST_COMMON"
 
           # Get existing common versions in Harbor
           EXISTING_COMMON=$(oras repo tags "${HARBOR_REPO}/common" 2>/dev/null | sort -V || true)
 
-          echo "Required common versions: $REQUIRED_COMMON"
-          echo "Existing common versions in Harbor: $EXISTING_COMMON"
+          # Push latest common version if it doesn't exist in Harbor
+          if echo "$EXISTING_COMMON" | grep -Fxq "$LATEST_COMMON"; then
+            echo "✅ Common chart $LATEST_COMMON already exists in Harbor"
+          else
+            echo "📦 Pushing common chart version $LATEST_COMMON to Harbor"
+            helm pull bitnami/common --version "$LATEST_COMMON" --destination packaged
+            chart_file="packaged/common-$LATEST_COMMON.tgz"
+            helm push "$chart_file" "oci://${HARBOR_REPO}"
+          fi
 
-          # Push required common versions that don't exist in Harbor
-          for VERSION in $REQUIRED_COMMON; do
-            if echo "$EXISTING_COMMON" | grep -Fxq "$VERSION"; then
-              echo "✅ Common chart $VERSION already exists in Harbor"
-            else
-              echo "📦 Attempting to push common chart version $VERSION to Harbor"
-              if helm pull bitnami/common --version "$VERSION" --destination packaged 2>/dev/null; then
-                chart_file="packaged/common-$VERSION.tgz"
-                helm push "$chart_file" "oci://${HARBOR_REPO}"
-                echo "✅ Successfully pushed common $VERSION to Harbor"
-              else
-                echo "⚠️ Warning: common $VERSION not available in Bitnami repo (it may have been removed)"
-                echo "   Skipping this version - ensure it exists in Harbor from previous runs"
-              fi
-            fi
-          done
-
-          # Cleanup unused common versions from Harbor
+          # Cleanup old common versions from Harbor (keep only latest)
           for VERSION in $EXISTING_COMMON; do
-            if echo "$REQUIRED_COMMON" | grep -Fxq "$VERSION"; then
-              echo "✅ Keeping common $VERSION (required by Redis)"
+            if [ "$VERSION" = "$LATEST_COMMON" ]; then
+              echo "✅ Keeping common $VERSION (current version)"
             else
-              echo "🗑 Removing unused common $VERSION from Harbor"
+              echo "🗑 Removing old common $VERSION from Harbor"
               oras manifest delete "${HARBOR_REPO}/common:$VERSION" --force || true
             fi
           done

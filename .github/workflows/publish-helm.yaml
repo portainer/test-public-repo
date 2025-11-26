@@ -70,8 +70,15 @@ jobs:
               echo "📦 Packaging Redis $VERSION"
               helm pull bitnami/redis --version "$VERSION" --untar --untardir .chart-tmp
 
-              # Modify Chart.yaml to remove OCI registry dependency and remove Chart.lock
+              # Get the latest available common version from Bitnami
+              LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
+              echo "  Using common version: $LATEST_COMMON"
+
+              # Modify Chart.yaml to:
+              # 1. Change repository to our GitHub repo
+              # 2. Update common version to latest available
               sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: https://portainer.github.io/test-public-repo|g' .chart-tmp/redis/Chart.yaml
+              sed -i "/name: common/,/version:/ s/version: .*/version: $LATEST_COMMON/" .chart-tmp/redis/Chart.yaml
               rm -f .chart-tmp/redis/Chart.lock
 
               helm package .chart-tmp/redis --version "$VERSION" --app-version "$VERSION" -d .chart-out
@@ -79,28 +86,20 @@ jobs:
             fi
           done
 
-      - name: Package common dependency charts
+      - name: Package common dependency chart
         run: |
-          # Determine all required common versions from packaged Redis charts
-          REQUIRED_COMMON=$(yq -r '.entries.redis[].dependencies[]? | select(.name == "common") | .version' .chart-out/index.yaml 2>/dev/null | sort -u || echo "")
+          # Get the latest available common version (same as used in Redis charts)
+          LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
 
-          # Get existing common versions to avoid re-packaging
+          # Check if already packaged
           EXISTING_COMMON=$(yq -r '.entries.common[]?.version' .chart-out/index.yaml 2>/dev/null || echo "")
 
-          # Package required common versions
-          for VERSION in $REQUIRED_COMMON; do
-            if echo "$EXISTING_COMMON" | grep -Fqx "$VERSION"; then
-              echo "⏩ Skipping already packaged common $VERSION"
-            else
-              echo "📦 Attempting to package common chart version $VERSION"
-              if helm pull bitnami/common --version "$VERSION" -d .chart-out 2>/dev/null; then
-                echo "✅ Successfully packaged common $VERSION"
-              else
-                echo "⚠️ Warning: common $VERSION not available in Bitnami repo (it may have been removed)"
-                echo "   The existing packaged version in gh-pages will be preserved"
-              fi
-            fi
-          done
+          if echo "$EXISTING_COMMON" | grep -Fqx "$LATEST_COMMON"; then
+            echo "⏩ Common $LATEST_COMMON already packaged"
+          else
+            echo "📦 Packaging common chart version $LATEST_COMMON"
+            helm pull bitnami/common --version "$LATEST_COMMON" -d .chart-out
+          fi
 
       - name: Package local charts
         run: |
@@ -140,18 +139,18 @@ jobs:
         run: |
           set -euo pipefail
 
+          # Get the latest common version (the one we should keep)
+          LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
+
           # Get all common versions currently in repository
-          EXISTING_COMMON=$(yq -r '.entries.common[]?.version' .chart-out/index.yaml 2>/dev/null | sort -u || echo "")
+          EXISTING_COMMON=$(yq -r '.entries.common[]?.version' .chart-out/index.yaml 2>/dev/null || echo "")
 
-          # Get all common versions required by Redis charts
-          REQUIRED_COMMON=$(yq -r '.entries.redis[].dependencies[]? | select(.name == "common") | .version' .chart-out/index.yaml 2>/dev/null | sort -u || echo "")
-
-          # Remove common versions that are not required
+          # Remove all common versions except the latest
           for VERSION in $EXISTING_COMMON; do
-            if echo "$REQUIRED_COMMON" | grep -Fqx "$VERSION"; then
-              echo "✅ Keeping common $VERSION (required by Redis)"
+            if [ "$VERSION" = "$LATEST_COMMON" ]; then
+              echo "✅ Keeping common $VERSION (current version)"
             else
-              echo "🗑 Removing unused common $VERSION"
+              echo "🗑 Removing old common $VERSION"
               rm -f .chart-out/common-$VERSION.tgz
             fi
           done
