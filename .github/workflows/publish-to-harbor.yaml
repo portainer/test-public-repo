@@ -41,13 +41,13 @@ jobs:
           echo "${{ secrets.HARBOR_ROBOT_TOKEN }}" | helm registry login harbor.portainercloud.io \
             -u '${{ secrets.HARBOR_ROBOT_USER }}' --password-stdin
 
-      - name: Sync Apache charts (Bitnami -> Harbor, keep latest 15)
+      - name: Sync Redis charts (Bitnami -> Harbor, keep latest 15)
         run: |
           set -euo pipefail
 
           BITNAMI_REPO="https://charts.bitnami.com/bitnami"
           # use the same repo variable shape you've used previously
-          HARBOR_REPO="harbor.portainercloud.io/helm/apache"
+          HARBOR_REPO="harbor.portainercloud.io/helm/redis"
           KEEP=15
 
           mkdir -p packaged
@@ -56,9 +56,9 @@ jobs:
           helm repo add bitnami "$BITNAMI_REPO" >/dev/null 2>&1 || true
           helm repo update
 
-          echo "→ Getting latest ${KEEP} versions from Bitnami for apache"
+          echo "→ Getting latest ${KEEP} versions from Bitnami for redis"
           # newest-first list (desc sort), keep only 15
-          bitnami_versions=$(helm search repo bitnami/apache --versions -o json \
+          bitnami_versions=$(helm search repo bitnami/redis --versions -o json \
             | jq -r '.[].version' \
             | sort -rV \
             | head -n ${KEEP} || true)
@@ -68,7 +68,7 @@ jobs:
 
           # fetch Harbor tags once
           echo "→ Fetching existing tags from Harbor"
-          harbor_tags=$(oras repo tags "${HARBOR_REPO}/apache" 2>/dev/null || true)
+          harbor_tags=$(oras repo tags "${HARBOR_REPO}/redis" 2>/dev/null || true)
           # normalize (one per line)
           echo "$harbor_tags" | sed '/^\s*$/d' > harbor_tags.txt
 
@@ -86,24 +86,24 @@ jobs:
 
             echo "  - $version missing in Harbor -> pulling & pushing"
             # pull and modify chart to remove OCI registry dependency
-            helm pull bitnami/apache --version "$version" --untar --destination .chart-tmp
+            helm pull bitnami/redis --version "$version" --untar --destination .chart-tmp
 
             # Modify Chart.yaml to remove OCI registry dependency and remove Chart.lock
-            sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: oci://harbor.portainercloud.io/helm|g' .chart-tmp/apache/Chart.yaml
-            rm -f .chart-tmp/apache/Chart.lock
+            sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: oci://harbor.portainercloud.io/helm|g' .chart-tmp/redis/Chart.yaml
+            rm -f .chart-tmp/redis/Chart.lock
 
             # Repackage the modified chart
-            helm package .chart-tmp/apache --destination packaged
-            rm -rf .chart-tmp/apache
+            helm package .chart-tmp/redis --destination packaged
+            rm -rf .chart-tmp/redis
 
-            chart_file="packaged/apache-$version.tgz"
+            chart_file="packaged/redis-$version.tgz"
             if [[ ! -f "$chart_file" ]]; then
               echo "ERROR: expected $chart_file to exist, aborting" >&2
               exit 1
             fi
 
             # Push using Helm OCI commands (requires helm registry login)
-            echo "    • helm push -> ${HARBOR_REPO}/apache:$version"
+            echo "    • helm push -> ${HARBOR_REPO}/redis:$version"
             helm push "$chart_file" "oci://${HARBOR_REPO}"
 
             # update local harbor_tags variable to include the new version so we don't re-push in same run
@@ -116,7 +116,7 @@ jobs:
           echo "→ Pruning Harbor, keeping only the latest ${KEEP} versions"
 
           # list all versions in harbor (newest-first), fall back to empty if none
-          all_versions=$(oras repo tags "${HARBOR_REPO}/apache" 2>/dev/null || true)
+          all_versions=$(oras repo tags "${HARBOR_REPO}/redis" 2>/dev/null || true)
           # sort newest-first by semver-like order
           all_versions_sorted=$(echo "$all_versions" | sort -rV)
 
@@ -130,9 +130,9 @@ jobs:
             echo "$to_delete"
             while IFS= read -r oldv; do
               [[ -z "$oldv" ]] && continue
-              echo "  • Deleting ${HARBOR_REPO}/apache:$oldv"
+              echo "  • Deleting ${HARBOR_REPO}/redis:$oldv"
               # use oras manifest delete for the reference
-              oras manifest delete "${HARBOR_REPO}/apache:$oldv" --force || true
+              oras manifest delete "${HARBOR_REPO}/redis:$oldv" --force || true
             done <<< "$to_delete"
           fi
 

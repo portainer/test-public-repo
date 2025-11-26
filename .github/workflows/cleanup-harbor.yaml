@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       confirm_cleanup:
-        description: 'Type "DELETE" to confirm cleanup of ALL Apache and common charts from Harbor'
+        description: 'Type "DELETE" to confirm cleanup of ALL Redis and common charts from Harbor'
         required: true
         default: ''
 
@@ -39,5 +39,5 @@ jobs:
       - name: Summary
         run: |
           echo "🧹 Harbor cleanup completed successfully!"
-          echo "All Apache and common charts have been removed from Harbor registry."
+          echo "All Redis and common charts have been removed from Harbor registry."
           echo "You can now run the 'Harbor Charts Sync' workflow to rebuild with updated metadata."

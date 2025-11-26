@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-# Harbor cleanup script - delete all Apache charts from Harbor registry
-HARBOR_REPO="harbor.portainercloud.io/helm/apache"
+# Harbor cleanup script - delete all Redis charts from Harbor registry
+HARBOR_REPO="harbor.portainercloud.io/helm/redis"
 
-echo "🧹 Cleaning up all Apache charts from Harbor..."
+echo "🧹 Cleaning up all Redis charts from Harbor..."
 
 # Check if HARBOR_ROBOT_USER and HARBOR_ROBOT_TOKEN are set
 if [[ -z "${HARBOR_ROBOT_USER:-}" ]] || [[ -z "${HARBOR_ROBOT_TOKEN:-}" ]]; then
@@ -20,12 +20,12 @@ echo "🔐 Logging into Harbor..."
 echo "$HARBOR_ROBOT_TOKEN" | oras login harbor.portainercloud.io \
     -u "$HARBOR_ROBOT_USER" --password-stdin
 
-# Get all Apache chart versions
-echo "📋 Getting list of all Apache chart versions..."
-all_versions=$(oras repo tags "${HARBOR_REPO}/apache" 2>/dev/null || true)
+# Get all Redis chart versions
+echo "📋 Getting list of all Redis chart versions..."
+all_versions=$(oras repo tags "${HARBOR_REPO}/redis" 2>/dev/null || true)
 
 if [[ -z "$all_versions" ]]; then
-    echo "✅ No Apache charts found in Harbor - already clean!"
+    echo "✅ No Redis charts found in Harbor - already clean!"
     exit 0
 fi
 
@@ -33,11 +33,11 @@ echo "Found versions:"
 echo "$all_versions"
 
 # Delete all versions
-echo "🗑️ Deleting all Apache chart versions..."
+echo "🗑️ Deleting all Redis chart versions..."
 while IFS= read -r version; do
     [[ -z "$version" ]] && continue
-    echo "  • Deleting ${HARBOR_REPO}/apache:$version"
-    oras manifest delete "${HARBOR_REPO}/apache:$version" --force || true
+    echo "  • Deleting ${HARBOR_REPO}/redis:$version"
+    oras manifest delete "${HARBOR_REPO}/redis:$version" --force || true
 done <<< "$all_versions"
 
 # Also clean up common chart if it exists
