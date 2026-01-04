@@ -6,7 +6,7 @@ entries:
       licenses: Apache-2.0
     apiVersion: v2
     appVersion: 2.31.4
-    created: "2026-01-03T03:31:38.620036505Z"
+    created: "2026-01-04T03:36:07.281866162Z"
     description: A Library Helm Chart for grouping common logic between bitnami charts.
       This chart is not deployable by itself.
     digest: 91311247f88ab95dd202d03971294561ff70bc65fd45e5de7705eb91fd0f310c
@@ -31,16 +31,16 @@ entries:
   nginx-multiple:
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2026-01-03T03:31:38.620399564Z"
+    created: "2026-01-04T03:36:07.28224548Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
-    digest: dad49dcef828455eef42f4f337b840c7272f9dab32867411ae0da8096222118b
+    digest: 7db5193540cb58aaf3b5be08261fa2f056c3ed66b6964e8c60fc4ab487238008
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2026-01-03T03:31:38.620220028Z"
+    created: "2026-01-04T03:36:07.282034306Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
     digest: 4b0b9f70d81b28bf036a9c63b139a2c5d074a95799b752f34cd1d49fc66ff78d
     name: nginx-multiple
@@ -70,7 +70,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 24.1.0
-    created: "2026-01-03T03:31:38.708270519Z"
+    created: "2026-01-04T03:36:07.370750107Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -118,7 +118,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 24.0.9
-    created: "2026-01-03T03:31:38.702372364Z"
+    created: "2026-01-04T03:36:07.364621987Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -166,7 +166,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 24.0.8
-    created: "2026-01-03T03:31:38.696451903Z"
+    created: "2026-01-04T03:36:07.358690889Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -214,7 +214,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 24.0.7
-    created: "2026-01-03T03:31:38.690518272Z"
+    created: "2026-01-04T03:36:07.352731319Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -262,7 +262,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 24.0.4
-    created: "2026-01-03T03:31:38.684540105Z"
+    created: "2026-01-04T03:36:07.347240305Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -310,7 +310,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 24.0.0
-    created: "2026-01-03T03:31:38.67916102Z"
+    created: "2026-01-04T03:36:07.341330694Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -358,7 +358,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.12
-    created: "2026-01-03T03:31:38.649731505Z"
+    created: "2026-01-04T03:36:07.311594642Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -406,7 +406,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.11
-    created: "2026-01-03T03:31:38.644317925Z"
+    created: "2026-01-04T03:36:07.306297219Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -454,7 +454,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.10
-    created: "2026-01-03T03:31:38.638554511Z"
+    created: "2026-01-04T03:36:07.300144788Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -502,7 +502,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.6
-    created: "2026-01-03T03:31:38.673395233Z"
+    created: "2026-01-04T03:36:07.335377545Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -550,7 +550,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.5
-    created: "2026-01-03T03:31:38.667401927Z"
+    created: "2026-01-04T03:36:07.329411059Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -598,7 +598,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.3
-    created: "2026-01-03T03:31:38.661539527Z"
+    created: "2026-01-04T03:36:07.323315791Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -646,7 +646,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.2
-    created: "2026-01-03T03:31:38.655671152Z"
+    created: "2026-01-04T03:36:07.3173894Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -694,7 +694,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.1
-    created: "2026-01-03T03:31:38.632424952Z"
+    created: "2026-01-04T03:36:07.294063492Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -742,7 +742,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.1.7
-    created: "2026-01-03T03:31:38.626614278Z"
+    created: "2026-01-04T03:36:07.288204315Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -768,4 +768,4 @@ entries:
     urls:
     - https://portainer.github.io/test-public-repo/redis-23.1.7.tgz
     version: 23.1.7
-generated: "2026-01-03T03:31:38.619238081Z"
+generated: "2026-01-04T03:36:07.281024861Z"
