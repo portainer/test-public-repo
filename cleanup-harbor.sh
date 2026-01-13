@@ -1,10 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-# Harbor cleanup script - delete all Redis charts from Harbor registry
+# Harbor cleanup script - delete all Redis and nginx charts from Harbor registry
 HARBOR_REPO="harbor.portainercloud.io/helm"
 
-echo "🧹 Cleaning up all Redis charts from Harbor..."
+echo "🧹 Cleaning up all Redis and nginx charts from Harbor..."
 
 # Check if HARBOR_ROBOT_USER and HARBOR_ROBOT_TOKEN are set
 if [[ -z "${HARBOR_ROBOT_USER:-}" ]] || [[ -z "${HARBOR_ROBOT_TOKEN:-}" ]]; then
@@ -39,6 +39,22 @@ while IFS= read -r version; do
     echo "  • Deleting ${HARBOR_REPO}/redis:$version"
     oras manifest delete "${HARBOR_REPO}/redis:$version" --force || true
 done <<< "$all_versions"
+
+# Clean up nginx charts
+echo "🧹 Cleaning up nginx charts from Harbor..."
+nginx_versions=$(oras repo tags "${HARBOR_REPO}/nginx" 2>/dev/null || true)
+if [[ -z "$nginx_versions" ]]; then
+    echo "✅ No nginx charts found in Harbor - already clean!"
+else
+    echo "Found nginx versions:"
+    echo "$nginx_versions"
+    echo "🗑️ Deleting all nginx chart versions..."
+    while IFS= read -r version; do
+        [[ -z "$version" ]] && continue
+        echo "  • Deleting ${HARBOR_REPO}/nginx:$version"
+        oras manifest delete "${HARBOR_REPO}/nginx:$version" --force || true
+    done <<< "$nginx_versions"
+fi
 
 # Also clean up common chart if it exists
 echo "🧹 Cleaning up common charts from Harbor..."

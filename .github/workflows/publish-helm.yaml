@@ -58,6 +58,14 @@ jobs:
           echo "$EXISTING" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+      - name: Determine existing nginx versions
+        id: nginx-versions
+        run: |
+          EXISTING=$(yq -r '.entries.nginx[].version' .chart-out/index.yaml 2>/dev/null || echo "")
+          echo "existing_versions<<EOF" >> $GITHUB_OUTPUT
+          echo "$EXISTING" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Package new Redis versions
         run: |
           EXISTING="${{ steps.redis-versions.outputs.existing_versions }}"
@@ -83,6 +91,34 @@ jobs:
 
               helm package .chart-tmp/redis --version "$VERSION" --app-version "$VERSION" -d .chart-out
               rm -rf .chart-tmp/redis
+            fi
+          done
+
+      - name: Package new nginx versions
+        run: |
+          EXISTING="${{ steps.nginx-versions.outputs.existing_versions }}"
+          LATEST=$(helm search repo bitnami/nginx --versions -o json | jq -r '.[].version' | head -n 15)
+
+          for VERSION in $LATEST; do
+            if echo "$EXISTING" | grep -Fqx "$VERSION"; then
+              echo "⏩ Skipping already packaged nginx $VERSION"
+            else
+              echo "📦 Packaging nginx $VERSION"
+              helm pull bitnami/nginx --version "$VERSION" --untar --untardir .chart-tmp
+
+              # Get the latest available common version from Bitnami
+              LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
+              echo "  Using common version: $LATEST_COMMON"
+
+              # Modify Chart.yaml to:
+              # 1. Change repository to our GitHub repo
+              # 2. Update common version to latest available
+              sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: https://portainer.github.io/test-public-repo|g' .chart-tmp/nginx/Chart.yaml
+              sed -i "/name: common/,/version:/ s/version: .*/version: $LATEST_COMMON/" .chart-tmp/nginx/Chart.yaml
+              rm -f .chart-tmp/nginx/Chart.lock
+
+              helm package .chart-tmp/nginx --version "$VERSION" --app-version "$VERSION" -d .chart-out
+              rm -rf .chart-tmp/nginx
             fi
           done
 

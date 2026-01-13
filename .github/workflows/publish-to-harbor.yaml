@@ -143,6 +143,107 @@ jobs:
             done <<< "$to_delete"
           fi
 
+      - name: Sync nginx charts (Bitnami -> Harbor, keep latest 15)
+        run: |
+          set -euo pipefail
+
+          BITNAMI_REPO="https://charts.bitnami.com/bitnami"
+          HARBOR_REPO="harbor.portainercloud.io/helm"
+          KEEP=15
+
+          mkdir -p packaged
+
+          # ensure bitnami repo is available
+          helm repo add bitnami "$BITNAMI_REPO" >/dev/null 2>&1 || true
+          helm repo update
+
+          echo "→ Getting latest ${KEEP} versions from Bitnami for nginx"
+          # newest-first list (desc sort), keep only 15
+          bitnami_versions=$(helm search repo bitnami/nginx --versions -o json \
+            | jq -r '.[].version' \
+            | sort -rV \
+            | head -n ${KEEP} || true)
+
+          echo "Bitnami latest versions (newest first):"
+          echo "$bitnami_versions"
+
+          # fetch Harbor tags once
+          echo "→ Fetching existing tags from Harbor"
+          harbor_tags=$(oras repo tags "${HARBOR_REPO}/nginx" 2>/dev/null || true)
+          # normalize (one per line)
+          echo "$harbor_tags" | sed '/^\s*$/d' > harbor_tags_nginx.txt
+
+          #
+          # For each version from Bitnami: push only if missing in Harbor
+          #
+          echo "→ Checking each Bitnami version against Harbor and pushing missing ones"
+          # iterate newest-first so newest pushed first
+          while IFS= read -r version; do
+            [[ -z "$version" ]] && continue
+            if echo "$harbor_tags" | grep -Fxq "$version"; then
+              echo "  - $version already in Harbor -> skip"
+              continue
+            fi
+
+            echo "  - $version missing in Harbor -> pulling & pushing"
+            # pull and modify chart to remove OCI registry dependency
+            helm pull bitnami/nginx --version "$version" --untar --destination .chart-tmp
+
+            # Get the latest available common version from Bitnami
+            LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
+            echo "    Using common version: $LATEST_COMMON"
+
+            # Modify Chart.yaml to:
+            # 1. Change repository to Harbor OCI registry
+            # 2. Update common version to latest available
+            sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: oci://harbor.portainercloud.io/helm|g' .chart-tmp/nginx/Chart.yaml
+            sed -i "/name: common/,/version:/ s/version: .*/version: $LATEST_COMMON/" .chart-tmp/nginx/Chart.yaml
+            rm -f .chart-tmp/nginx/Chart.lock
+
+            # Repackage the modified chart
+            helm package .chart-tmp/nginx --destination packaged
+            rm -rf .chart-tmp/nginx
+
+            chart_file="packaged/nginx-$version.tgz"
+            if [[ ! -f "$chart_file" ]]; then
+              echo "ERROR: expected $chart_file to exist, aborting" >&2
+              exit 1
+            fi
+
+            # Push using Helm OCI commands (requires helm registry login)
+            echo "    • helm push -> ${HARBOR_REPO}/nginx:$version"
+            helm push "$chart_file" "oci://${HARBOR_REPO}"
+
+            # update local harbor_tags variable to include the new version so we don't re-push in same run
+            harbor_tags="$(printf "%s\n%s" "$version" "$harbor_tags")"
+          done <<< "$bitnami_versions"
+
+          #
+          # Prune Harbor: keep latest KEEP versions and delete the rest
+          #
+          echo "→ Pruning Harbor, keeping only the latest ${KEEP} versions"
+
+          # list all versions in harbor (newest-first), fall back to empty if none
+          all_versions=$(oras repo tags "${HARBOR_REPO}/nginx" 2>/dev/null || true)
+          # sort newest-first by semver-like order
+          all_versions_sorted=$(echo "$all_versions" | sort -rV)
+
+          # compute versions to delete: lines starting at KEEP+1
+          to_delete=$(echo "$all_versions_sorted" | sed -n "$((KEEP+1)),\$p" || true)
+
+          if [[ -z "${to_delete//[$'\t\r\n ']}" ]]; then
+            echo "No old versions to delete (Harbor has <= ${KEEP} versions)."
+          else
+            echo "Versions to delete:"
+            echo "$to_delete"
+            while IFS= read -r oldv; do
+              [[ -z "$oldv" ]] && continue
+              echo "  • Deleting ${HARBOR_REPO}/nginx:$oldv"
+              # use oras manifest delete for the reference
+              oras manifest delete "${HARBOR_REPO}/nginx:$oldv" --force || true
+            done <<< "$to_delete"
+          fi
+
       - name: Sync common dependency charts to Harbor
         run: |
           set -euo pipefail
