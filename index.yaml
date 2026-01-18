@@ -6,7 +6,7 @@ entries:
       licenses: Apache-2.0
     apiVersion: v2
     appVersion: 2.31.4
-    created: "2026-01-17T03:31:46.851871075Z"
+    created: "2026-01-18T03:34:52.448882246Z"
     description: A Library Helm Chart for grouping common logic between bitnami charts.
       This chart is not deployable by itself.
     digest: 91311247f88ab95dd202d03971294561ff70bc65fd45e5de7705eb91fd0f310c
@@ -45,7 +45,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.4.3
-    created: "2026-01-17T03:31:46.898299919Z"
+    created: "2026-01-18T03:34:52.497305777Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -89,7 +89,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.4.2
-    created: "2026-01-17T03:31:46.895443702Z"
+    created: "2026-01-18T03:34:52.494357867Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -133,7 +133,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.4.1
-    created: "2026-01-17T03:31:46.891909971Z"
+    created: "2026-01-18T03:34:52.490493511Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -177,7 +177,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.4.0
-    created: "2026-01-17T03:31:46.889079984Z"
+    created: "2026-01-18T03:34:52.487470421Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -221,7 +221,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.3.9
-    created: "2026-01-17T03:31:46.886204862Z"
+    created: "2026-01-18T03:34:52.484216889Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -265,7 +265,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.3.8
-    created: "2026-01-17T03:31:46.882433102Z"
+    created: "2026-01-18T03:34:52.480892707Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -309,7 +309,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.3.3
-    created: "2026-01-17T03:31:46.879575152Z"
+    created: "2026-01-18T03:34:52.477904402Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -353,7 +353,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.3.2
-    created: "2026-01-17T03:31:46.876152927Z"
+    created: "2026-01-18T03:34:52.474031707Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -397,7 +397,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.2.6
-    created: "2026-01-17T03:31:46.873321888Z"
+    created: "2026-01-18T03:34:52.471165059Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -441,7 +441,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.2.4
-    created: "2026-01-17T03:31:46.869987655Z"
+    created: "2026-01-18T03:34:52.467777512Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -485,7 +485,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.2.3
-    created: "2026-01-17T03:31:46.867138171Z"
+    created: "2026-01-18T03:34:52.464998888Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -529,7 +529,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.2.1
-    created: "2026-01-17T03:31:46.864344141Z"
+    created: "2026-01-18T03:34:52.461959157Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -573,7 +573,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.1.1
-    created: "2026-01-17T03:31:46.860795465Z"
+    created: "2026-01-18T03:34:52.457965674Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -617,7 +617,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.0.11
-    created: "2026-01-17T03:31:46.858072417Z"
+    created: "2026-01-18T03:34:52.455192239Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -661,7 +661,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.0.10
-    created: "2026-01-17T03:31:46.854578793Z"
+    created: "2026-01-18T03:34:52.451793778Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -692,16 +692,16 @@ entries:
   nginx-multiple:
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2026-01-17T03:31:46.898628925Z"
+    created: "2026-01-18T03:34:52.497622548Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
-    digest: 097f0e7ecff95eef973657cd1d0c035bb1e30d0a90911cfcf1412c5f05a389fe
+    digest: f429e5b934066974a70255959e78637fe759d55aa25aed7c52e96a2b177a5826
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2026-01-17T03:31:46.898486418Z"
+    created: "2026-01-18T03:34:52.4974787Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
     digest: 4b0b9f70d81b28bf036a9c63b139a2c5d074a95799b752f34cd1d49fc66ff78d
     name: nginx-multiple
@@ -730,8 +730,56 @@ entries:
       licenses: Apache-2.0
       tanzuCategory: service
     apiVersion: v2
+    appVersion: 24.1.2
+    created: "2026-01-18T03:34:52.58908674Z"
+    dependencies:
+    - name: common
+      repository: https://portainer.github.io/test-public-repo
+      tags:
+      - bitnami-common
+      version: 2.31.4
+    description: Redis(R) is an open source, advanced key-value store. It is often
+      referred to as a data structure server since keys can contain strings, hashes,
+      lists, sets and sorted sets.
+    digest: dfb5c412c04c7354e3912c6bd2bcd80df13ffa877f60c21ef7d78bea088a520a
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
+    keywords:
+    - redis
+    - keyvalue
+    - database
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: redis
+    sources:
+    - https://github.com/bitnami/charts/tree/main/bitnami/redis
+    urls:
+    - https://portainer.github.io/test-public-repo/redis-24.1.2.tgz
+    version: 24.1.2
+  - annotations:
+      fips: "true"
+      images: |
+        - name: kubectl
+          version: 1.35.0
+          image: registry-1.docker.io/bitnami/kubectl:latest
+        - name: os-shell
+          version: "5"
+          image: registry-1.docker.io/bitnami/os-shell:latest
+        - name: redis
+          version: 8.4.0
+          image: registry-1.docker.io/bitnami/redis:latest
+        - name: redis-exporter
+          version: 1.80.1
+          image: registry-1.docker.io/bitnami/redis-exporter:latest
+        - name: redis-sentinel
+          version: 8.4.0
+          image: registry-1.docker.io/bitnami/redis-sentinel:latest
+      licenses: Apache-2.0
+      tanzuCategory: service
+    apiVersion: v2
     appVersion: 24.1.0
-    created: "2026-01-17T03:31:46.986545343Z"
+    created: "2026-01-18T03:34:52.582933238Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -779,7 +827,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 24.0.9
-    created: "2026-01-17T03:31:46.980604724Z"
+    created: "2026-01-18T03:34:52.577024143Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -827,7 +875,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 24.0.8
-    created: "2026-01-17T03:31:46.975299694Z"
+    created: "2026-01-18T03:34:52.570947155Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -875,7 +923,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 24.0.7
-    created: "2026-01-17T03:31:46.969045692Z"
+    created: "2026-01-18T03:34:52.565067487Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -923,7 +971,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 24.0.4
-    created: "2026-01-17T03:31:46.963106249Z"
+    created: "2026-01-18T03:34:52.558220834Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -971,7 +1019,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 24.0.0
-    created: "2026-01-17T03:31:46.957110139Z"
+    created: "2026-01-18T03:34:52.552692981Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -1019,7 +1067,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.12
-    created: "2026-01-17T03:31:46.927539386Z"
+    created: "2026-01-18T03:34:52.521816155Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -1067,7 +1115,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.11
-    created: "2026-01-17T03:31:46.921681635Z"
+    created: "2026-01-18T03:34:52.515896501Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -1115,7 +1163,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.10
-    created: "2026-01-17T03:31:46.915685778Z"
+    created: "2026-01-18T03:34:52.509724065Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -1163,7 +1211,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.6
-    created: "2026-01-17T03:31:46.950953766Z"
+    created: "2026-01-18T03:34:52.54684885Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -1211,7 +1259,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.5
-    created: "2026-01-17T03:31:46.945509188Z"
+    created: "2026-01-18T03:34:52.5405992Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -1259,7 +1307,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.3
-    created: "2026-01-17T03:31:46.939833063Z"
+    created: "2026-01-18T03:34:52.533806755Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -1307,7 +1355,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.2
-    created: "2026-01-17T03:31:46.933519832Z"
+    created: "2026-01-18T03:34:52.527463812Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -1355,7 +1403,7 @@ entries:
       tanzuCategory: service
     apiVersion: v2
     appVersion: 23.2.1
-    created: "2026-01-17T03:31:46.909861484Z"
+    created: "2026-01-18T03:34:52.503691993Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -1381,52 +1429,4 @@ entries:
     urls:
     - https://portainer.github.io/test-public-repo/redis-23.2.1.tgz
     version: 23.2.1
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.34.1
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.2.2
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.79.0
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.2.2
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 23.1.7
-    created: "2026-01-17T03:31:46.904590738Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.33.1
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: 232b46e6dd876de7e8fdfd3b8b88c7e5835120e827db72ffcdb62adb40c976eb
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-23.1.7.tgz
-    version: 23.1.7
-generated: "2026-01-17T03:31:46.850962263Z"
+generated: "2026-01-18T03:34:52.448023113Z"
