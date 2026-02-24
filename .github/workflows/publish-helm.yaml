@@ -196,7 +196,8 @@ jobs:
           # Collect all common versions required by packaged charts
           REQUIRED_VERSIONS=$(for chart in .chart-out/{nginx,redis}-*.tgz; do
             if [ -f "$chart" ]; then
-              tar -xzOf "$chart" "*/Chart.yaml" | yq -r '.dependencies[] | select(.name=="common") | .version' 2>/dev/null || true
+              # Extract Chart.yaml without using wildcards in tar
+              tar -tzf "$chart" | grep "Chart.yaml$" | head -1 | xargs -I {} tar -xzOf "$chart" {} | yq -r '.dependencies[] | select(.name=="common") | .version' 2>/dev/null || true
             fi
           done | sort -u)
 
