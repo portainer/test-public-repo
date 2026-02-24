@@ -143,24 +143,26 @@ jobs:
         run: |
           set -euo pipefail
           HARBOR_REPO="harbor.portainercloud.io/helm"
-          BITNAMI_REPO="https://charts.bitnami.com/bitnami"
 
-          # Collect all common versions required by the latest 15 nginx versions from Bitnami
-          echo "📋 Scanning Bitnami nginx versions for required common versions..."
+          # Collect all common versions required by nginx versions CURRENTLY IN HARBOR
+          echo "📋 Scanning nginx versions in Harbor for required common versions..."
           NEEDED_COMMON=""
 
-          # Get all the latest nginx versions (same KEEP value as sync step)
-          bitnami_versions=$(helm search repo bitnami/nginx --versions -o json \
-            | jq -r '.[].version' \
-            | sort -rV \
-            | head -n 15 || true)
+          # Get all nginx versions currently in Harbor
+          harbor_versions=$(oras repo tags "${HARBOR_REPO}/nginx" 2>/dev/null | sort -V || true)
+          echo "Found nginx versions in Harbor:"
+          echo "$harbor_versions"
 
-          for version in $bitnami_versions; do
+          for version in $harbor_versions; do
             [[ -z "$version" ]] && continue
-            echo "  Checking nginx $version..."
-            # Pull and inspect to find common version
+            echo ""
+            echo "  Checking nginx $version from Bitnami..."
+            # Pull from Bitnami and inspect to find common version
             if [ ! -d ".chart-tmp/nginx" ]; then
-              helm pull bitnami/nginx --version "$version" --untar --destination .chart-tmp >/dev/null 2>&1 || continue
+              helm pull bitnami/nginx --version "$version" --untar --destination .chart-tmp >/dev/null 2>&1 || {
+                echo "    ⚠️  Could not pull nginx $version from Bitnami"
+                continue
+              }
             fi
 
             if [ -f ".chart-tmp/nginx/Chart.yaml" ]; then
