@@ -78,16 +78,25 @@ jobs:
               echo "📦 Packaging Redis $VERSION"
               helm pull bitnami/redis --version "$VERSION" --untar --untardir .chart-tmp
 
-              # Get the latest available common version from Bitnami
-              LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
-              echo "  Using common version: $LATEST_COMMON"
+              # Extract the common version that redis requires
+              REQUIRED_COMMON=$(yq -r '.dependencies[] | select(.name=="common") | .version' .chart-tmp/redis/Chart.yaml)
+              echo "  redis $VERSION requires common $REQUIRED_COMMON"
 
-              # Modify Chart.yaml to:
-              # 1. Change repository to our GitHub repo
-              # 2. Update common version to latest available
-              sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: https://portainer.github.io/test-public-repo|g' .chart-tmp/redis/Chart.yaml
-              sed -i "/name: common/,/version:/ s/version: .*/version: $LATEST_COMMON/" .chart-tmp/redis/Chart.yaml
+              # Check if this common version is already packaged
+              EXISTING_COMMON=$(yq -r '.entries.common[]?.version' .chart-out/index.yaml 2>/dev/null || echo "")
+              if ! echo "$EXISTING_COMMON" | grep -Fqx "$REQUIRED_COMMON"; then
+                echo "  📦 Packaging common $REQUIRED_COMMON (required by redis)"
+                helm pull bitnami/common --version "$REQUIRED_COMMON" -d .chart-out
+              else
+                echo "  ✅ common $REQUIRED_COMMON already packaged"
+              fi
+
+              # Remove bundled charts to avoid version conflicts
+              rm -rf .chart-tmp/redis/charts/
               rm -f .chart-tmp/redis/Chart.lock
+
+              # Update Chart.yaml to point to our GitHub repo
+              sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: https://portainer.github.io/test-public-repo|g' .chart-tmp/redis/Chart.yaml
 
               helm package .chart-tmp/redis --version "$VERSION" --app-version "$VERSION" -d .chart-out
               rm -rf .chart-tmp/redis
@@ -106,16 +115,25 @@ jobs:
               echo "📦 Packaging nginx $VERSION"
               helm pull bitnami/nginx --version "$VERSION" --untar --untardir .chart-tmp
 
-              # Get the latest available common version from Bitnami
-              LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
-              echo "  Using common version: $LATEST_COMMON"
+              # Extract the common version that nginx requires
+              REQUIRED_COMMON=$(yq -r '.dependencies[] | select(.name=="common") | .version' .chart-tmp/nginx/Chart.yaml)
+              echo "  nginx $VERSION requires common $REQUIRED_COMMON"
 
-              # Modify Chart.yaml to:
-              # 1. Change repository to our GitHub repo
-              # 2. Update common version to latest available
-              sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: https://portainer.github.io/test-public-repo|g' .chart-tmp/nginx/Chart.yaml
-              sed -i "/name: common/,/version:/ s/version: .*/version: $LATEST_COMMON/" .chart-tmp/nginx/Chart.yaml
+              # Check if this common version is already packaged
+              EXISTING_COMMON=$(yq -r '.entries.common[]?.version' .chart-out/index.yaml 2>/dev/null || echo "")
+              if ! echo "$EXISTING_COMMON" | grep -Fqx "$REQUIRED_COMMON"; then
+                echo "  📦 Packaging common $REQUIRED_COMMON (required by nginx)"
+                helm pull bitnami/common --version "$REQUIRED_COMMON" -d .chart-out
+              else
+                echo "  ✅ common $REQUIRED_COMMON already packaged"
+              fi
+
+              # Remove bundled charts to avoid version conflicts
+              rm -rf .chart-tmp/nginx/charts/
               rm -f .chart-tmp/nginx/Chart.lock
+
+              # Update Chart.yaml to point to our GitHub repo
+              sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: https://portainer.github.io/test-public-repo|g' .chart-tmp/nginx/Chart.yaml
 
               helm package .chart-tmp/nginx --version "$VERSION" --app-version "$VERSION" -d .chart-out
               rm -rf .chart-tmp/nginx
@@ -175,18 +193,25 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Get the latest common version (the one we should keep)
-          LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
+          # Collect all common versions required by packaged charts
+          REQUIRED_VERSIONS=$(for chart in .chart-out/{nginx,redis}-*.tgz; do
+            if [ -f "$chart" ]; then
+              tar -xzOf "$chart" "*/Chart.yaml" | yq -r '.dependencies[] | select(.name=="common") | .version' 2>/dev/null || true
+            fi
+          done | sort -u)
+
+          echo "🔍 Common versions required by packaged charts:"
+          echo "$REQUIRED_VERSIONS"
 
           # Get all common versions currently in repository
           EXISTING_COMMON=$(yq -r '.entries.common[]?.version' .chart-out/index.yaml 2>/dev/null || echo "")
 
-          # Remove all common versions except the latest
+          # Remove only common versions that aren't referenced by any chart
           for VERSION in $EXISTING_COMMON; do
-            if [ "$VERSION" = "$LATEST_COMMON" ]; then
-              echo "✅ Keeping common $VERSION (current version)"
+            if echo "$REQUIRED_VERSIONS" | grep -Fqx "$VERSION"; then
+              echo "✅ Keeping common $VERSION (required by at least one chart)"
             else
-              echo "🗑 Removing old common $VERSION"
+              echo "🗑 Removing unused common $VERSION (not required by any packaged chart)"
               rm -f .chart-out/common-$VERSION.tgz
             fi
           done
