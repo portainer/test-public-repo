@@ -8,7 +8,7 @@ entries:
       licenses: Apache-2.0
     apiVersion: v2
     appVersion: 2.36.0
-    created: "2026-02-24T04:43:36.363324634Z"
+    created: "2026-02-24T10:21:37.1043502+05:30"
     description: A Library Helm Chart for grouping common logic between bitnami charts.
       This chart is not deployable by itself.
     digest: c5b37556a1fe58b66ffcd09c299b791df040ea243c5787098b8f03875756d24b
@@ -47,7 +47,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.5.0
-    created: "2026-02-24T04:43:36.411709671Z"
+    created: "2026-02-24T10:21:37.4511776+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -91,7 +91,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.4.7
-    created: "2026-02-24T04:43:36.408742571Z"
+    created: "2026-02-24T10:21:37.4266115+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -135,7 +135,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.4.4
-    created: "2026-02-24T04:43:36.405025914Z"
+    created: "2026-02-24T10:21:37.4069105+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -179,7 +179,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.4.3
-    created: "2026-02-24T04:43:36.402132011Z"
+    created: "2026-02-24T10:21:37.3844785+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -223,7 +223,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.4.2
-    created: "2026-02-24T04:43:36.39885865Z"
+    created: "2026-02-24T10:21:37.3622599+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -267,7 +267,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.4.1
-    created: "2026-02-24T04:43:36.395650239Z"
+    created: "2026-02-24T10:21:37.3414728+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -311,7 +311,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.4.0
-    created: "2026-02-24T04:43:36.392733102Z"
+    created: "2026-02-24T10:21:37.3165048+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -355,7 +355,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.3.9
-    created: "2026-02-24T04:43:36.388980519Z"
+    created: "2026-02-24T10:21:37.295184+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -399,7 +399,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.3.8
-    created: "2026-02-24T04:43:36.385984956Z"
+    created: "2026-02-24T10:21:37.2718283+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -443,7 +443,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.3.3
-    created: "2026-02-24T04:43:36.382387857Z"
+    created: "2026-02-24T10:21:37.2473932+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -487,7 +487,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.3.2
-    created: "2026-02-24T04:43:36.379279062Z"
+    created: "2026-02-24T10:21:37.2257874+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -531,7 +531,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.2.6
-    created: "2026-02-24T04:43:36.376313215Z"
+    created: "2026-02-24T10:21:37.2031899+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -575,7 +575,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.2.4
-    created: "2026-02-24T04:43:36.372625219Z"
+    created: "2026-02-24T10:21:37.1823418+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -619,7 +619,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.2.3
-    created: "2026-02-24T04:43:36.369825912Z"
+    created: "2026-02-24T10:21:37.1591851+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -663,7 +663,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.2.1
-    created: "2026-02-24T04:43:36.366183872Z"
+    created: "2026-02-24T10:21:37.1345316+05:30"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -694,7 +694,7 @@ entries:
   nginx-multiple:
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2026-02-24T04:43:36.412020972Z"
+    created: "2026-02-24T10:21:37.4541759+05:30"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
     digest: b6153960ca9fb376dc1957432e1905964e4b7dd287adfe4f5366338b1e834f3f
     name: nginx-multiple
@@ -703,732 +703,11 @@ entries:
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2026-02-24T04:43:36.411871152Z"
+    created: "2026-02-24T10:21:37.4531091+05:30"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
     digest: 4b0b9f70d81b28bf036a9c63b139a2c5d074a95799b752f34cd1d49fc66ff78d
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.1.tgz
     version: 0.1.1
-  redis:
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.35.1
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.6.1
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.81.0
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.6.1
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 25.3.1
-    created: "2026-02-24T04:43:36.502525783Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.36.0
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: e92f993890f8a51796aaaac534dc0fc8d08d1fa2cae03681b749403fae9b7af7
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-25.3.1.tgz
-    version: 25.3.1
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.35.1
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.6.0
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.81.0
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.6.0
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 25.3.0
-    created: "2026-02-24T04:43:36.496361366Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.36.0
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: e7df9482ce7c7aa8e3ac8f79644109bf148d9abc4a8f07a5f16756042a3f2905
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-25.3.0.tgz
-    version: 25.3.0
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.35.1
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.6.0
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.81.0
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.6.0
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 25.2.0
-    created: "2026-02-24T04:43:36.490934944Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.36.0
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: 57d9596d3fa0912a1dc2293689e6c22c5869ad3f2dd6de296f03b6203ea24b8f
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-25.2.0.tgz
-    version: 25.2.0
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.35.1
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.6.0
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.2
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.6.0
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 25.0.0
-    created: "2026-02-24T04:43:36.48468382Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.36.0
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: cae58564417c6af04875367871f8a2bc08391e8393a7c7365f01f2b973cbac4c
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-25.0.0.tgz
-    version: 25.0.0
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.35.0
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.4.1
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.2
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.4.1
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 24.1.8
-    created: "2026-02-24T04:43:36.47865735Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.36.0
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: c0fd828464938688d1e376ccc92cfbe6dbda8601d9ff35c0e0016bc8863b21fb
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-24.1.8.tgz
-    version: 24.1.8
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.35.0
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.4.1
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.2
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.4.1
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 24.1.6
-    created: "2026-02-24T04:43:36.472234388Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.34.0
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: 2fd3a68add98d17d1a06dba93329006740df3fb16386bcda34aaf20b4b731295
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-24.1.6.tgz
-    version: 24.1.6
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.35.0
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.2
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 24.1.3
-    created: "2026-02-24T04:43:36.466817805Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.34.0
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: e9886b28258c4c8e49fdecb357b7a913b813435f1524872fbca4b88cd16b25f7
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-24.1.3.tgz
-    version: 24.1.3
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.35.0
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.1
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 24.1.2
-    created: "2026-02-24T04:43:36.460391386Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.31.4
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: dfb5c412c04c7354e3912c6bd2bcd80df13ffa877f60c21ef7d78bea088a520a
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-24.1.2.tgz
-    version: 24.1.2
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.35.0
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.1
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 24.1.0
-    created: "2026-02-24T04:43:36.454200255Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.31.4
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: a41202eecf4f7dcfbcee153a7727fe77cfe19ee2b567c4f6ba89cd86dd8dd4b9
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-24.1.0.tgz
-    version: 24.1.0
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.35.0
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.1
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 24.0.9
-    created: "2026-02-24T04:43:36.448158975Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.31.4
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: cf8477925c471dba1f3decd0bfe70dd904076fefa60f93de5b110d5e7519b1c1
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-24.0.9.tgz
-    version: 24.0.9
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.34.3
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.1
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 24.0.8
-    created: "2026-02-24T04:43:36.442124288Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.31.4
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: b93d914454d22f7d667fd846bc31c0cba93376ca3e632254813c87e70326001c
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-24.0.8.tgz
-    version: 24.0.8
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.34.3
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.1
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 24.0.7
-    created: "2026-02-24T04:43:36.436016019Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.31.4
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: 7921b40a6b502c57809bf61930dd0d375411c5b3b45b17a7a99494b35ca098b3
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-24.0.7.tgz
-    version: 24.0.7
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.34.3
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.1
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 24.0.4
-    created: "2026-02-24T04:43:36.429646466Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.31.4
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: 4d052cb7d5ee9749f9ef9b32d275ffc31851db2117c33cb23bf7c0b0d16f49b0
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-24.0.4.tgz
-    version: 24.0.4
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.34.2
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.0
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.4.0
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 24.0.0
-    created: "2026-02-24T04:43:36.424145335Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.33.2
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: ffcfcf5727d8899ff01887fc690054b5b478c19e93ceb00d4cae5be72e88061e
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-24.0.0.tgz
-    version: 24.0.0
-  - annotations:
-      fips: "true"
-      images: |
-        - name: kubectl
-          version: 1.34.1
-          image: registry-1.docker.io/bitnami/kubectl:latest
-        - name: os-shell
-          version: "5"
-          image: registry-1.docker.io/bitnami/os-shell:latest
-        - name: redis
-          version: 8.2.3
-          image: registry-1.docker.io/bitnami/redis:latest
-        - name: redis-exporter
-          version: 1.80.0
-          image: registry-1.docker.io/bitnami/redis-exporter:latest
-        - name: redis-sentinel
-          version: 8.2.3
-          image: registry-1.docker.io/bitnami/redis-sentinel:latest
-      licenses: Apache-2.0
-      tanzuCategory: service
-    apiVersion: v2
-    appVersion: 23.2.12
-    created: "2026-02-24T04:43:36.41796342Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.33.2
-    description: Redis(R) is an open source, advanced key-value store. It is often
-      referred to as a data structure server since keys can contain strings, hashes,
-      lists, sets and sorted sets.
-    digest: 9c67bdc86ffe9510c7400c824d3cc611e9cc0d6de5465005091bca03c0c1f0de
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/redis/img/redis-stack-220x234.png
-    keywords:
-    - redis
-    - keyvalue
-    - database
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: redis
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/redis
-    urls:
-    - https://portainer.github.io/test-public-repo/redis-23.2.12.tgz
-    version: 23.2.12
-generated: "2026-02-24T04:43:36.362373137Z"
+generated: "2026-02-24T10:21:37.0812859+05:30"
