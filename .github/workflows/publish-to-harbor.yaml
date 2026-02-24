@@ -143,14 +143,44 @@ jobs:
         run: |
           set -euo pipefail
           HARBOR_REPO="harbor.portainercloud.io/helm"
+          BITNAMI_REPO="https://charts.bitnami.com/bitnami"
 
-          # Collect all common versions required by nginx charts in packaged directory
-          echo "📋 Scanning packaged nginx charts for required common versions..."
-          NEEDED_COMMON=$(for chart in packaged/nginx-*.tgz; do
-            if [ -f "$chart" ]; then
-              tar -tzf "$chart" | grep "Chart.yaml$" | head -1 | xargs -I {} tar -xzOf "$chart" {} | grep -A1 "name: common" | grep "version:" | awk '{print $2}' || true
+          # Collect all common versions required by the latest 15 nginx versions from Bitnami
+          echo "📋 Scanning Bitnami nginx versions for required common versions..."
+          NEEDED_COMMON=""
+
+          # Get all the latest nginx versions (same KEEP value as sync step)
+          bitnami_versions=$(helm search repo bitnami/nginx --versions -o json \
+            | jq -r '.[].version' \
+            | sort -rV \
+            | head -n 15 || true)
+
+          for version in $bitnami_versions; do
+            [[ -z "$version" ]] && continue
+            echo "  Checking nginx $version..."
+            # Pull and inspect to find common version
+            if [ ! -d ".chart-tmp/nginx" ]; then
+              helm pull bitnami/nginx --version "$version" --untar --destination .chart-tmp >/dev/null 2>&1 || continue
             fi
-          done | sort -u)
+
+            if [ -f ".chart-tmp/nginx/Chart.yaml" ]; then
+              common_ver=$(yq -r '.dependencies[] | select(.name=="common") | .version' .chart-tmp/nginx/Chart.yaml 2>/dev/null || true)
+              if [[ -n "$common_ver" ]]; then
+                echo "    → requires common $common_ver"
+                NEEDED_COMMON="$(echo -e "$NEEDED_COMMON\n$common_ver" | sort -u)"
+              fi
+              rm -rf .chart-tmp/nginx
+            fi
+          done
+
+          # Also ensure the latest common is available
+          LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version' 2>/dev/null || true)
+          if [[ -n "$LATEST_COMMON" ]]; then
+            NEEDED_COMMON="$(echo -e "$NEEDED_COMMON\n$LATEST_COMMON" | sort -u)"
+          fi
+
+          # Clean up empty lines
+          NEEDED_COMMON=$(echo "$NEEDED_COMMON" | sed '/^$/d' | sort -u)
 
           # Also ensure the latest common is available
           LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
