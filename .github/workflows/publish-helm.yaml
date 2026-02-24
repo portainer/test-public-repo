@@ -140,20 +140,34 @@ jobs:
             fi
           done
 
-      - name: Package common dependency chart
+      - name: Ensure all required common chart versions are packaged
         run: |
-          # Get the latest available common version (same as used in Redis charts)
-          LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
+          # Get all common versions required by packaged charts
+          NEEDED_COMMON=$(for chart in .chart-out/{nginx,redis}-*.tgz; do
+            if [ -f "$chart" ]; then
+              tar -tzf "$chart" | grep "Chart.yaml$" | head -1 | xargs -I {} tar -xzOf "$chart" {} | yq -r '.dependencies[] | select(.name=="common") | .version' 2>/dev/null || true
+            fi
+          done | sort -u)
 
-          # Check if already packaged
+          # Also ensure the latest common is available
+          LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
+          NEEDED_COMMON=$(echo -e "$NEEDED_COMMON\n$LATEST_COMMON" | sort -u)
+
+          echo "📋 Common versions needed by packaged charts:"
+          echo "$NEEDED_COMMON"
+
+          # Get versions already packaged
           EXISTING_COMMON=$(yq -r '.entries.common[]?.version' .chart-out/index.yaml 2>/dev/null || echo "")
 
-          if echo "$EXISTING_COMMON" | grep -Fqx "$LATEST_COMMON"; then
-            echo "⏩ Common $LATEST_COMMON already packaged"
-          else
-            echo "📦 Packaging common chart version $LATEST_COMMON"
-            helm pull bitnami/common --version "$LATEST_COMMON" -d .chart-out
-          fi
+          # Package any missing versions
+          for VERSION in $NEEDED_COMMON; do
+            if echo "$EXISTING_COMMON" | grep -Fqx "$VERSION"; then
+              echo "✅ Common $VERSION already packaged"
+            else
+              echo "📦 Packaging common $VERSION (required by packaged charts)"
+              helm pull bitnami/common --version "$VERSION" -d .chart-out
+            fi
+          done
 
       - name: Package local charts
         run: |
