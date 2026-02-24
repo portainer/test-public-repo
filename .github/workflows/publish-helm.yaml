@@ -159,13 +159,18 @@ jobs:
           # Get versions already packaged
           EXISTING_COMMON=$(yq -r '.entries.common[]?.version' .chart-out/index.yaml 2>/dev/null || echo "")
 
-          # Package any missing versions
+          # Get available versions in Bitnami repo
+          AVAILABLE_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[].version')
+
+          # Package any missing versions that exist in Bitnami
           for VERSION in $NEEDED_COMMON; do
             if echo "$EXISTING_COMMON" | grep -Fqx "$VERSION"; then
               echo "✅ Common $VERSION already packaged"
-            else
+            elif echo "$AVAILABLE_COMMON" | grep -Fqx "$VERSION"; then
               echo "📦 Packaging common $VERSION (required by packaged charts)"
               helm pull bitnami/common --version "$VERSION" -d .chart-out
+            else
+              echo "⚠️  Common $VERSION not available in Bitnami repo (chart version removed upstream)"
             fi
           done
 
@@ -227,7 +232,15 @@ jobs:
               echo "✅ Keeping common $VERSION (required by at least one chart)"
             else
               echo "🗑 Removing unused common $VERSION (not required by any packaged chart)"
-              rm -f .chart-out/common-$VERSION.tgz
+              rm -f .chart-out/common-$VERSION.tgz || true
+            fi
+          done
+
+          # Warn about required versions not in repository
+          echo ""
+          for VERSION in $REQUIRED_VERSIONS; do
+            if ! echo "$EXISTING_COMMON" | grep -Fqx "$VERSION"; then
+              echo "⚠️  WARNING: Common $VERSION is required by charts but not available (may fail at deploy time)"
             fi
           done
 
