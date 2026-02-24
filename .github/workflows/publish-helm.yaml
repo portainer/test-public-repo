@@ -50,14 +50,6 @@ jobs:
           cp .gh-pages/*.tgz .chart-out/ 2>/dev/null || true
           cp .gh-pages/index.yaml .chart-out/index.yaml 2>/dev/null || true
 
-      - name: Determine existing Redis versions
-        id: redis-versions
-        run: |
-          EXISTING=$(yq -r '.entries.redis[].version' .chart-out/index.yaml 2>/dev/null || echo "")
-          echo "existing_versions<<EOF" >> $GITHUB_OUTPUT
-          echo "$EXISTING" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
-
       - name: Determine existing nginx versions
         id: nginx-versions
         run: |
@@ -65,43 +57,6 @@ jobs:
           echo "existing_versions<<EOF" >> $GITHUB_OUTPUT
           echo "$EXISTING" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
-
-      - name: Package new Redis versions
-        run: |
-          EXISTING="${{ steps.redis-versions.outputs.existing_versions }}"
-          LATEST=$(helm search repo bitnami/redis --versions -o json | jq -r '.[].version' | head -n 15)
-
-          for VERSION in $LATEST; do
-            if echo "$EXISTING" | grep -Fqx "$VERSION"; then
-              echo "⏩ Skipping already packaged Redis $VERSION"
-            else
-              echo "📦 Packaging Redis $VERSION"
-              helm pull bitnami/redis --version "$VERSION" --untar --untardir .chart-tmp
-
-              # Extract the common version that redis requires
-              REQUIRED_COMMON=$(yq -r '.dependencies[] | select(.name=="common") | .version' .chart-tmp/redis/Chart.yaml)
-              echo "  redis $VERSION requires common $REQUIRED_COMMON"
-
-              # Check if this common version is already packaged
-              EXISTING_COMMON=$(yq -r '.entries.common[]?.version' .chart-out/index.yaml 2>/dev/null || echo "")
-              if ! echo "$EXISTING_COMMON" | grep -Fqx "$REQUIRED_COMMON"; then
-                echo "  📦 Packaging common $REQUIRED_COMMON (required by redis)"
-                helm pull bitnami/common --version "$REQUIRED_COMMON" -d .chart-out
-              else
-                echo "  ✅ common $REQUIRED_COMMON already packaged"
-              fi
-
-              # Remove bundled charts to avoid version conflicts
-              rm -rf .chart-tmp/redis/charts/
-              rm -f .chart-tmp/redis/Chart.lock
-
-              # Update Chart.yaml to point to our GitHub repo
-              sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: https://portainer.github.io/test-public-repo|g' .chart-tmp/redis/Chart.yaml
-
-              helm package .chart-tmp/redis --version "$VERSION" --app-version "$VERSION" -d .chart-out
-              rm -rf .chart-tmp/redis
-            fi
-          done
 
       - name: Package new nginx versions
         run: |
@@ -143,7 +98,7 @@ jobs:
       - name: Ensure all required common chart versions are packaged
         run: |
           # Get all common versions required by packaged charts
-          NEEDED_COMMON=$(for chart in .chart-out/{nginx,redis}-*.tgz; do
+          NEEDED_COMMON=$(for chart in .chart-out/nginx-*.tgz; do
             if [ -f "$chart" ]; then
               tar -tzf "$chart" | grep "Chart.yaml$" | head -1 | xargs -I {} tar -xzOf "$chart" {} | yq -r '.dependencies[] | select(.name=="common") | .version' 2>/dev/null || true
             fi
@@ -213,7 +168,7 @@ jobs:
           set -euo pipefail
 
           # Collect all common versions required by packaged charts
-          REQUIRED_VERSIONS=$(for chart in .chart-out/{nginx,redis}-*.tgz; do
+          REQUIRED_VERSIONS=$(for chart in .chart-out/nginx-*.tgz; do
             if [ -f "$chart" ]; then
               # Extract Chart.yaml without using wildcards in tar
               tar -tzf "$chart" | grep "Chart.yaml$" | head -1 | xargs -I {} tar -xzOf "$chart" {} | yq -r '.dependencies[] | select(.name=="common") | .version' 2>/dev/null || true
