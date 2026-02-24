@@ -87,15 +87,12 @@ jobs:
             # pull and modify chart to remove OCI registry dependency
             helm pull bitnami/nginx --version "$version" --untar --destination .chart-tmp
 
-            # Get the latest available common version from Bitnami
-            LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
-            echo "    Using common version: $LATEST_COMMON"
+            # Extract the actual common version required by this nginx version
+            REQUIRED_COMMON=$(yq -r '.dependencies[] | select(.name=="common") | .version' .chart-tmp/nginx/Chart.yaml)
+            echo "    nginx $version requires common $REQUIRED_COMMON"
 
-            # Modify Chart.yaml to:
-            # 1. Change repository to Harbor OCI registry
-            # 2. Update common version to latest available
+            # Modify Chart.yaml to change repository to Harbor OCI registry (keep original version)
             sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: oci://harbor.portainercloud.io/helm|g' .chart-tmp/nginx/Chart.yaml
-            sed -i "/name: common/,/version:/ s/version: .*/version: $LATEST_COMMON/" .chart-tmp/nginx/Chart.yaml
             rm -f .chart-tmp/nginx/Chart.lock
 
             # Repackage the modified chart
@@ -142,34 +139,59 @@ jobs:
             done <<< "$to_delete"
           fi
 
-      - name: Sync common dependency charts to Harbor
+      - name: Ensure all required common chart versions are in Harbor
         run: |
           set -euo pipefail
           HARBOR_REPO="harbor.portainercloud.io/helm"
 
-          # Get the latest available common version (same as used in nginx charts)
+          # Collect all common versions required by nginx charts in packaged directory
+          echo "📋 Scanning packaged nginx charts for required common versions..."
+          NEEDED_COMMON=$(for chart in packaged/nginx-*.tgz; do
+            if [ -f "$chart" ]; then
+              tar -tzf "$chart" | grep "Chart.yaml$" | head -1 | xargs -I {} tar -xzOf "$chart" {} | grep -A1 "name: common" | grep "version:" | awk '{print $2}' || true
+            fi
+          done | sort -u)
+
+          # Also ensure the latest common is available
           LATEST_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[0].version')
-          echo "Latest common version: $LATEST_COMMON"
+          NEEDED_COMMON=$(echo -e "$NEEDED_COMMON\n$LATEST_COMMON" | sort -u)
+
+          echo "Common versions needed by packaged charts:"
+          echo "$NEEDED_COMMON"
 
           # Get existing common versions in Harbor
           EXISTING_COMMON=$(oras repo tags "${HARBOR_REPO}/common" 2>/dev/null | sort -V || true)
+          echo ""
+          echo "Common versions already in Harbor:"
+          echo "$EXISTING_COMMON"
 
-          # Push latest common version if it doesn't exist in Harbor
-          if echo "$EXISTING_COMMON" | grep -Fxq "$LATEST_COMMON"; then
-            echo "✅ Common chart $LATEST_COMMON already exists in Harbor"
-          else
-            echo "📦 Pushing common chart version $LATEST_COMMON to Harbor"
-            helm pull bitnami/common --version "$LATEST_COMMON" --destination packaged
-            chart_file="packaged/common-$LATEST_COMMON.tgz"
-            helm push "$chart_file" "oci://${HARBOR_REPO}"
-          fi
+          # Get available versions in Bitnami repo
+          AVAILABLE_COMMON=$(helm search repo bitnami/common --versions -o json | jq -r '.[].version')
 
-          # Cleanup old common versions from Harbor (keep only latest)
-          for VERSION in $EXISTING_COMMON; do
-            if [ "$VERSION" = "$LATEST_COMMON" ]; then
-              echo "✅ Keeping common $VERSION (current version)"
+          # Push any missing required versions
+          echo ""
+          echo "Pushing missing common versions to Harbor..."
+          for VERSION in $NEEDED_COMMON; do
+            if echo "$EXISTING_COMMON" | grep -Fxq "$VERSION"; then
+              echo "✅ Common $VERSION already in Harbor"
+            elif echo "$AVAILABLE_COMMON" | grep -Fxq "$VERSION"; then
+              echo "📦 Pushing common $VERSION to Harbor (required by packaged nginx charts)"
+              helm pull bitnami/common --version "$VERSION" --destination packaged
+              chart_file="packaged/common-$VERSION.tgz"
+              helm push "$chart_file" "oci://${HARBOR_REPO}"
             else
-              echo "🗑 Removing old common $VERSION from Harbor"
+              echo "⚠️  Common $VERSION not available in Bitnami repo"
+            fi
+          done
+
+          # Cleanup unused common versions from Harbor
+          echo ""
+          echo "Cleaning up unused common versions from Harbor..."
+          for VERSION in $EXISTING_COMMON; do
+            if echo "$NEEDED_COMMON" | grep -Fxq "$VERSION"; then
+              echo "✅ Keeping common $VERSION (required by packaged charts)"
+            else
+              echo "🗑 Removing unused common $VERSION from Harbor"
               oras manifest delete "${HARBOR_REPO}/common:$VERSION" --force || true
             fi
           done
