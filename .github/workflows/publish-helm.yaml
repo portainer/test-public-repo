@@ -90,6 +90,10 @@ jobs:
               # Update Chart.yaml to point to our GitHub repo
               sed -i 's|repository: oci://registry-1.docker.io/bitnamicharts|repository: https://portainer.github.io/test-public-repo|g' .chart-tmp/nginx/Chart.yaml
 
+              # Helm requires dependencies to be present in charts/ at package time
+              mkdir -p .chart-tmp/nginx/charts/
+              cp .chart-out/common-${REQUIRED_COMMON}.tgz .chart-tmp/nginx/charts/
+
               helm package .chart-tmp/nginx --version "$VERSION" --app-version "$VERSION" -d .chart-out
               rm -rf .chart-tmp/nginx
             fi
