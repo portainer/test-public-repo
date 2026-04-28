@@ -21,16 +21,10 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Get latest ORAS version
-        id: oras_version
-        run: |
-          ver=$(curl -s https://api.github.com/repos/oras-project/oras/releases/latest | jq -r .tag_name)
-          echo "version=${ver#v}" >> $GITHUB_OUTPUT
-
       - name: Install ORAS CLI
         uses: oras-project/setup-oras@v2
         with:
-          version: ${{ steps.oras_version.outputs.version }}
+          version: latest
 
       # Login to Harbor with robot (single-quote around username prevents shell $ expansion)
       - name: Login to Harbor (oras + helm)
