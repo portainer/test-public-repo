@@ -23,8 +23,6 @@ jobs:
 
       - name: Install ORAS CLI
         uses: oras-project/setup-oras@v2
-        with:
-          version: latest
 
       # Login to Harbor with robot (single-quote around username prevents shell $ expansion)
       - name: Login to Harbor (oras + helm)
