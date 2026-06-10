@@ -8,7 +8,7 @@ entries:
       licenses: Apache-2.0
     apiVersion: v2
     appVersion: 2.39.0
-    created: "2026-06-09T04:27:00.726259472Z"
+    created: "2026-06-10T04:32:16.345864869Z"
     description: A Library Helm Chart for grouping common logic between bitnami charts.
       This chart is not deployable by itself.
     digest: 2780b8f08e9185445e3e43d9b796485955face69021c3a89d53d9a39fef65e34
@@ -37,7 +37,7 @@ entries:
       licenses: Apache-2.0
     apiVersion: v2
     appVersion: 2.39.0
-    created: "2026-06-09T04:27:00.72541373Z"
+    created: "2026-06-10T04:32:16.344825621Z"
     description: A Library Helm Chart for grouping common logic between bitnami charts.
       This chart is not deployable by itself.
     digest: bb1fa0e86d1a8232f511cf43de6ce7906c34f89cc124d8de7d8c0b9ebcef7124
@@ -66,7 +66,7 @@ entries:
       licenses: Apache-2.0
     apiVersion: v2
     appVersion: 2.37.0
-    created: "2026-06-09T04:27:00.724640212Z"
+    created: "2026-06-10T04:32:16.343672222Z"
     description: A Library Helm Chart for grouping common logic between bitnami charts.
       This chart is not deployable by itself.
     digest: 65edea82d8e36b9b01d7e8c75e54d2703eb288c7eabed5a215093c72c22a3721
@@ -104,8 +104,52 @@ entries:
       licenses: Apache-2.0
       tanzuCategory: clusterUtility
     apiVersion: v2
+    appVersion: 25.0.3
+    created: "2026-06-10T04:32:16.404204577Z"
+    dependencies:
+    - name: common
+      repository: https://portainer.github.io/test-public-repo
+      tags:
+      - bitnami-common
+      version: 2.40.0
+    description: NGINX Open Source is a web server that can be also used as a reverse
+      proxy, load balancer, and HTTP cache. Recommended for high-demanding sites due
+      to its ability to provide faster content.
+    digest: 9d9fbf251792e82b7e06b4b03b7a033d02f6889678293cc96a33ff80b32d6c09
+    home: https://bitnami.com
+    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/nginx/img/nginx-stack-220x234.png
+    keywords:
+    - nginx
+    - http
+    - web
+    - www
+    - reverse proxy
+    maintainers:
+    - name: Broadcom, Inc. All Rights Reserved.
+      url: https://github.com/bitnami/charts
+    name: nginx
+    sources:
+    - https://github.com/bitnami/charts/tree/main/bitnami/nginx
+    urls:
+    - https://portainer.github.io/test-public-repo/nginx-25.0.3.tgz
+    version: 25.0.3
+  - annotations:
+      fips: "true"
+      images: |
+        - name: git
+          version: 2.54.0
+          image: registry-1.docker.io/bitnami/git:latest
+        - name: nginx
+          version: 1.31.1
+          image: registry-1.docker.io/bitnami/nginx:latest
+        - name: nginx-exporter
+          version: 1.5.1
+          image: registry-1.docker.io/bitnami/nginx-exporter:latest
+      licenses: Apache-2.0
+      tanzuCategory: clusterUtility
+    apiVersion: v2
     appVersion: 25.0.2
-    created: "2026-06-09T04:27:00.777766496Z"
+    created: "2026-06-10T04:32:16.400760174Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -149,7 +193,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 25.0.0
-    created: "2026-06-09T04:27:00.773876541Z"
+    created: "2026-06-10T04:32:16.397503141Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -193,7 +237,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 24.0.4
-    created: "2026-06-09T04:27:00.770954152Z"
+    created: "2026-06-10T04:32:16.392067013Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -237,7 +281,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 24.0.3
-    created: "2026-06-09T04:27:00.76763431Z"
+    created: "2026-06-10T04:32:16.389060676Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -281,7 +325,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 24.0.2
-    created: "2026-06-09T04:27:00.764367257Z"
+    created: "2026-06-10T04:32:16.384947831Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -325,7 +369,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 24.0.1
-    created: "2026-06-09T04:27:00.761486767Z"
+    created: "2026-06-10T04:32:16.380048066Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -369,7 +413,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 24.0.0
-    created: "2026-06-09T04:27:00.757775871Z"
+    created: "2026-06-10T04:32:16.373856255Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -413,7 +457,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 23.0.6
-    created: "2026-06-09T04:27:00.754867198Z"
+    created: "2026-06-10T04:32:16.370756838Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -457,7 +501,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 23.0.5
-    created: "2026-06-09T04:27:00.751184558Z"
+    created: "2026-06-10T04:32:16.367711543Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -501,7 +545,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 23.0.4
-    created: "2026-06-09T04:27:00.74823007Z"
+    created: "2026-06-10T04:32:16.364092258Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -545,7 +589,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 23.0.3
-    created: "2026-06-09T04:27:00.745230246Z"
+    created: "2026-06-10T04:32:16.360638651Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -589,7 +633,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 23.0.2
-    created: "2026-06-09T04:27:00.741605146Z"
+    created: "2026-06-10T04:32:16.35754971Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -633,7 +677,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 23.0.0
-    created: "2026-06-09T04:27:00.738711331Z"
+    created: "2026-06-10T04:32:16.352768333Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -677,7 +721,7 @@ entries:
       tanzuCategory: clusterUtility
     apiVersion: v2
     appVersion: 22.6.12
-    created: "2026-06-09T04:27:00.735077612Z"
+    created: "2026-06-10T04:32:16.349674055Z"
     dependencies:
     - name: common
       repository: https://portainer.github.io/test-public-repo
@@ -705,67 +749,23 @@ entries:
     urls:
     - https://portainer.github.io/test-public-repo/nginx-22.6.12.tgz
     version: 22.6.12
-  - annotations:
-      fips: "true"
-      images: |
-        - name: git
-          version: 2.53.0
-          image: registry-1.docker.io/bitnami/git:latest
-        - name: nginx
-          version: 1.29.8
-          image: registry-1.docker.io/bitnami/nginx:latest
-        - name: nginx-exporter
-          version: 1.5.1
-          image: registry-1.docker.io/bitnami/nginx-exporter:latest
-      licenses: Apache-2.0
-      tanzuCategory: clusterUtility
-    apiVersion: v2
-    appVersion: 22.6.11
-    created: "2026-06-09T04:27:00.732105039Z"
-    dependencies:
-    - name: common
-      repository: https://portainer.github.io/test-public-repo
-      tags:
-      - bitnami-common
-      version: 2.38.0
-    description: NGINX Open Source is a web server that can be also used as a reverse
-      proxy, load balancer, and HTTP cache. Recommended for high-demanding sites due
-      to its ability to provide faster content.
-    digest: 97fd8b09cf713608de8e26b8e87670eda96194974dd9d5129bb41c943fc247df
-    home: https://bitnami.com
-    icon: https://dyltqmyl993wv.cloudfront.net/assets/stacks/nginx/img/nginx-stack-220x234.png
-    keywords:
-    - nginx
-    - http
-    - web
-    - www
-    - reverse proxy
-    maintainers:
-    - name: Broadcom, Inc. All Rights Reserved.
-      url: https://github.com/bitnami/charts
-    name: nginx
-    sources:
-    - https://github.com/bitnami/charts/tree/main/bitnami/nginx
-    urls:
-    - https://portainer.github.io/test-public-repo/nginx-22.6.11.tgz
-    version: 22.6.11
   nginx-multiple:
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2026-06-09T04:27:00.778077428Z"
+    created: "2026-06-10T04:32:16.404572919Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
-    digest: 2a85049e36ebfc91ab763d225606d71e062fe0b0fc1e0ae06bf26807649da2a2
+    digest: 6fb2b2010510fb20f7f30ee06832c55d2bf5a8a954f0bc6343d895f25fe85db0
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.2.tgz
     version: 0.1.2
   - apiVersion: v2
     appVersion: 1.25.0
-    created: "2026-06-09T04:27:00.777927968Z"
+    created: "2026-06-10T04:32:16.404369164Z"
     description: A Helm chart to deploy multiple nginx deployments, each with 1 pod
     digest: 4b0b9f70d81b28bf036a9c63b139a2c5d074a95799b752f34cd1d49fc66ff78d
     name: nginx-multiple
     urls:
     - https://portainer.github.io/test-public-repo/nginx-multiple-0.1.1.tgz
     version: 0.1.1
-generated: "2026-06-09T04:27:00.723485441Z"
+generated: "2026-06-10T04:32:16.342633525Z"
