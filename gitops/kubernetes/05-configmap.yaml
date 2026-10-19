@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-app-config
+  namespace: demo-app
+  labels:
+    app.kubernetes.io/part-of: demo-app
+data:
+  APP_ENV: production
+  LOG_LEVEL: info
+  DB_HOST: postgres.demo-app.svc.cluster.local
+  DB_PORT: "5432"
+  app.properties: |
+    feature.newUI=true
+    cache.ttlSeconds=300
