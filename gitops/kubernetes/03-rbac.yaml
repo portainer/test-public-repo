@@ -1,0 +1,27 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: demo-app-role
+  namespace: demo-app
+  labels:
+    app.kubernetes.io/part-of: demo-app
+rules:
+  - apiGroups: [""]
+    resources: ["configmaps", "secrets"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: demo-app-rolebinding
+  namespace: demo-app
+  labels:
+    app.kubernetes.io/part-of: demo-app
+subjects:
+  - kind: ServiceAccount
+    name: demo-app-sa
+    namespace: demo-app
+roleRef:
+  kind: Role
+  name: demo-app-role
+  apiGroup: rbac.authorization.k8s.io
