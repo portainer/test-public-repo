@@ -1,0 +1,55 @@
+:root {
+  --bg: #EEF1EE;
+  --card: #FFFFFF;
+  --ink: #1E2A2D;
+  --muted: #5F6E70;
+  --line: #D3DBD6;
+  --accent: #2E6A68;
+  --danger: #A33B2E;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151B1C; --card: #1E2829; --ink: #E3EAE6;
+    --muted: #93A5A3; --line: #2F3D3E; --accent: #6FB3AE; --danger: #E08072;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+.wrap { max-width: 640px; margin: 0 auto; padding: 32px 16px 64px; }
+h1 { margin: 0 0 20px; font: 600 1.9rem/1.2 Georgia, "Times New Roman", serif; }
+
+.composer {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+  padding: 14px; display: grid; gap: 10px; margin-bottom: 20px;
+}
+input, textarea {
+  width: 100%; font: inherit; color: var(--ink); background: transparent;
+  border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px;
+}
+textarea { resize: vertical; min-height: 90px; }
+#title { font-weight: 600; }
+.row { display: flex; gap: 8px; }
+button {
+  font: inherit; font-weight: 600; cursor: pointer; border-radius: 6px;
+  padding: 7px 14px; border: 1px solid var(--accent);
+  background: var(--accent); color: var(--card);
+}
+button.secondary, .note button { background: transparent; color: var(--ink); border-color: var(--line); }
+.note button.delete:hover { border-color: var(--danger); color: var(--danger); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.search { margin-bottom: 14px; background: var(--card); }
+.notes { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.note {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px;
+}
+.note h2 { margin: 0 0 4px; font-size: 1.05rem; }
+.note p { margin: 0 0 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.note .meta { color: var(--muted); font-size: 0.82rem; margin-bottom: 10px; }
+.note .row button { padding: 4px 10px; font-size: 0.88rem; font-weight: 500; }
+.empty { color: var(--muted); text-align: center; }

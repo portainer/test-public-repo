@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Notes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="wrap">
+    <h1>Notes</h1>
+
+    <form id="noteForm" class="composer" autocomplete="off">
+      <input id="title" type="text" placeholder="Title" aria-label="Title" maxlength="120">
+      <textarea id="body" rows="4" placeholder="Write a note…" aria-label="Note"></textarea>
+      <div class="row">
+        <button type="submit" id="saveBtn">Add note</button>
+        <button type="button" id="cancelBtn" class="secondary" hidden>Cancel</button>
+      </div>
+    </form>
+
+    <input id="search" class="search" type="search" placeholder="Search notes" aria-label="Search notes">
+
+    <ul id="notes" class="notes"></ul>
+    <p id="empty" class="empty">No notes yet. Write one above and select Add note.</p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

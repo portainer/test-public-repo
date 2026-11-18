@@ -1,0 +1,16 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Calorie Tracker</title>
+<style>body{font-family:Arial;max-width:700px;margin:40px auto}input,button{padding:8px;margin:4px}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:6px}</style>
+</head><body>
+<h1>Calorie Tracker</h1>
+<input id="food" placeholder="Food"><input id="cal" type="number" placeholder="Calories">
+<button onclick="add()">Add</button>
+<h2>Total: <span id="total">0</span> kcal</h2>
+<table><thead><tr><th>Food</th><th>Calories</th><th></th></tr></thead><tbody id="rows"></tbody></table>
+<script>
+let items=JSON.parse(localStorage.getItem('items')||'[]');
+function save(){localStorage.setItem('items',JSON.stringify(items));render();}
+function add(){const f=food.value.trim();const c=Number(cal.value);if(!f||!c)return;items.push({f,c});food.value='';cal.value='';save();}
+function del(i){items.splice(i,1);save();}
+function render(){rows.innerHTML='';let t=0;items.forEach((x,i)=>{t+=x.c;rows.innerHTML+=`<tr><td>${x.f}</td><td>${x.c}</td><td><button onclick="del(${i})">Delete</button></td></tr>`});total.textContent=t;}
+render();
+</script></body></html>
