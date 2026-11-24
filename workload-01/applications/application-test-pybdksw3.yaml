@@ -1,0 +1,238 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: application-test-pybdksw3-data
+  namespace: applications
+  labels:
+    app: application-test-pybdksw3
+    managed-by: portainer-run
+  annotations:
+    portainer-run/deploy-type: vibe
+    portainer-run/git-target-id: b0070221-8c8e-4bec-8e51-f9b3552ab3c6
+    portainer-run/git-branch: master
+    portainer-run/git-path: workload-01/applications/application-test-pybdksw3.yaml
+    portainer-run/runtime: nginx
+    portainer-run/vibe-source-path: workload-01/applications/application-test-pybdksw3/src
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application-test-pybdksw3
+  namespace: applications
+  labels:
+    app: application-test-pybdksw3
+    managed-by: portainer-run
+  annotations:
+    portainer-run/deploy-type: vibe
+    portainer-run/git-target-id: b0070221-8c8e-4bec-8e51-f9b3552ab3c6
+    portainer-run/git-branch: master
+    portainer-run/git-path: workload-01/applications/application-test-pybdksw3.yaml
+    portainer-run/runtime: nginx
+    portainer-run/vibe-source-path: workload-01/applications/application-test-pybdksw3/src
+    portainer-run/size: S
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application-test-pybdksw3
+  template:
+    metadata:
+      labels:
+        app: application-test-pybdksw3
+        managed-by: portainer-run
+    spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      automountServiceAccountToken: false
+      initContainers:
+        - name: vibe-web-guard
+          image: nginxinc/nginx-unprivileged:alpine
+          command:
+            - sh
+            - '-c'
+            - >-
+              cp -a /etc/nginx/conf.d/. /guard/ && printf '%s' 'location ~ /\.(?!well-known/) { deny all; }
+
+              ' > /guard/run-deny-dotfiles.inc && sed -i '/^server {/a include /etc/nginx/conf.d/run-deny-dotfiles.inc;'
+              /guard/default.conf && grep -q run-deny-dotfiles.inc /guard/default.conf
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /guard
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          imagePullPolicy: Always
+        - name: vibe-sync
+          image: alpine/git:latest
+          command:
+            - sh
+            - '-c'
+            - >-
+              git clone --depth 1 --branch='master' --
+              "https://${GIT_USERNAME}:${GIT_TOKEN}@"'github.com/portainer/test-public-repo' '/tmp/repo' && rm -rf
+              '/tmp/repo/.git' && rm -rf '/usr/share/nginx/html/.git' '/usr/share/nginx/html/.env' && mkdir -p
+              '/usr/share/nginx/html' && cp -r '/tmp/repo/workload-01/applications/application-test-pybdksw3/src/.'
+              '/usr/share/nginx/html/' && rm -rf '/tmp/repo'
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 512Mi
+          volumeMounts:
+            - name: app-data
+              mountPath: /usr/share/nginx/html
+          env:
+            - name: GIT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: application-test-pybdksw3-git-credentials
+                  key: username
+            - name: GIT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: application-test-pybdksw3-git-credentials
+                  key: token
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+        - name: vibe-env
+          image: busybox:1.36
+          command:
+            - sh
+            - '-c'
+            - rm -f /usr/share/nginx/html/.env
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: app-data
+              mountPath: /usr/share/nginx/html
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+      containers:
+        - name: application-test-pybdksw3
+          image: nginxinc/nginx-unprivileged:alpine
+          command:
+            - sh
+            - '-c'
+            - nginx -g 'daemon off;'
+          workingDir: /usr/share/nginx/html
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: app-data
+              mountPath: /usr/share/nginx/html
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d
+          resources:
+            requests:
+              cpu: 100m
+              memory: 1Gi
+            limits:
+              cpu: '1'
+              memory: 4Gi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: application-test-pybdksw3-app-secrets
+      volumes:
+        - name: app-data
+          persistentVolumeClaim:
+            claimName: application-test-pybdksw3-data
+        - name: nginx-conf
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: application-test-pybdksw3
+  namespace: applications
+  labels:
+    app: application-test-pybdksw3
+    managed-by: portainer-run
+  annotations:
+    portainer-run/deploy-type: vibe
+    portainer-run/git-target-id: b0070221-8c8e-4bec-8e51-f9b3552ab3c6
+    portainer-run/git-branch: master
+    portainer-run/git-path: workload-01/applications/application-test-pybdksw3.yaml
+    portainer-run/runtime: nginx
+    portainer-run/vibe-source-path: workload-01/applications/application-test-pybdksw3/src
+spec:
+  type: ClusterIP
+  selector:
+    app: application-test-pybdksw3
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: application-test-pybdksw3
+  namespace: applications
+  labels:
+    app: application-test-pybdksw3
+    managed-by: portainer-run
+  annotations:
+    portainer-run/deploy-type: vibe
+    portainer-run/git-target-id: b0070221-8c8e-4bec-8e51-f9b3552ab3c6
+    portainer-run/git-branch: master
+    portainer-run/git-path: workload-01/applications/application-test-pybdksw3.yaml
+    portainer-run/runtime: nginx
+    portainer-run/vibe-source-path: workload-01/applications/application-test-pybdksw3/src
+    kubernetes.io/ingress.class: traefik
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: application-test-pybdksw3.e2e.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: application-test-pybdksw3
+                port:
+                  number: 8080
