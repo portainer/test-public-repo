@@ -1,8 +1,0 @@
-services:
-  notes-app:
-    build: .
-    image: notes-app
-    container_name: notes-app
-    ports:
-      - "8081:8081"
-    restart: unless-stopped
