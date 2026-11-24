@@ -191,13 +191,6 @@ metadata:
   labels:
     app: application-test-tr1hc543
     managed-by: portainer-run
-  annotations:
-    portainer-run/deploy-type: vibe
-    portainer-run/git-target-id: 3ce16cb2-2fd1-48cf-a713-75851ee598dd
-    portainer-run/git-branch: master
-    portainer-run/git-path: workload-01/applications/application-test-tr1hc543.yaml
-    portainer-run/runtime: nginx
-    portainer-run/vibe-source-path: workload-01/applications/application-test-tr1hc543/src
 spec:
   type: ClusterIP
   selector:
@@ -216,17 +209,11 @@ metadata:
     app: application-test-tr1hc543
     managed-by: portainer-run
   annotations:
-    portainer-run/deploy-type: vibe
-    portainer-run/git-target-id: 3ce16cb2-2fd1-48cf-a713-75851ee598dd
-    portainer-run/git-branch: master
-    portainer-run/git-path: workload-01/applications/application-test-tr1hc543.yaml
-    portainer-run/runtime: nginx
-    portainer-run/vibe-source-path: workload-01/applications/application-test-tr1hc543/src
     kubernetes.io/ingress.class: traefik
 spec:
   ingressClassName: traefik
   rules:
-    - host: application-test-tr1hc543.e2e.localhost
+    - host: application-test-tr1hc543-edited.e2e.localhost
       http:
         paths:
           - path: /
