@@ -1,337 +1,148 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Notes</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #E9EEEA;
-    --panel: #F6F8F5;
-    --paper: #FFFFFF;
-    --ink: #1D2A2E;
-    --muted: #5E6E70;
-    --line: #D3DCD6;
-    --accent: #2E6A68;
-    --accent-ink: #FFFFFF;
-    --mark: #F3DE73;
-    --danger: #A33B2E;
-    --ui: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --read: "Literata", Georgia, "Times New Roman", serif;
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #141B1C; --panel: #1A2324; --paper: #1F2A2B; --ink: #E3EAE6;
-      --muted: #93A5A3; --line: #2F3D3E; --accent: #6FB3AE; --accent-ink: #0F1A1A;
-      --mark: #8A7A2A; --danger: #E08072;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #141B1C; --panel: #1A2324; --paper: #1F2A2B; --ink: #E3EAE6;
-    --muted: #93A5A3; --line: #2F3D3E; --accent: #6FB3AE; --accent-ink: #0F1A1A;
-    --mark: #8A7A2A; --danger: #E08072;
-  }
-  *, *::before, *::after { box-sizing: inherit; }
-  html { height: 100%; scroll-padding-top: env(safe-area-inset-top, 0px); }
-  body {
-    height: 100%; margin: 0; background: var(--bg); color: var(--ink);
-    font: 15px/1.5 var(--ui);
-  }
-  button { font: inherit; color: inherit; cursor: pointer; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-  .app { display: grid; grid-template-columns: 300px 1fr; height: 100%; }
-
-  /* Sidebar */
-  .side { display: flex; flex-direction: column; background: var(--panel); border-right: 1px solid var(--line); min-height: 0; }
-  .side-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 16px 10px; }
-  .side-head h1 { margin: 0; font: 600 1.35rem/1 var(--read); letter-spacing: -0.01em; }
-  .new-btn {
-    border: 0; background: var(--accent); color: var(--accent-ink);
-    padding: 7px 14px; border-radius: 999px; font-weight: 600; font-size: 0.9rem;
-  }
-  .search { padding: 0 16px 12px; }
-  .search input {
-    width: 100%; padding: 8px 12px; border: 1px solid var(--line); border-radius: 8px;
-    background: var(--paper); color: var(--ink); font: inherit;
-  }
-  .list { list-style: none; margin: 0; padding: 0 8px 16px; overflow-y: auto; flex: 1; }
-  .list li button {
-    display: block; width: 100%; text-align: left; border: 0; background: transparent;
-    padding: 10px 10px; border-radius: 8px;
-  }
-  .list li button:hover { background: color-mix(in srgb, var(--line) 45%, transparent); }
-  .list li button[aria-current="true"] { background: var(--paper); box-shadow: inset 3px 0 0 var(--accent); }
-  .item-title { display: block; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .item-meta { display: block; color: var(--muted); font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .item-meta mark, .item-title mark { background: var(--mark); color: inherit; border-radius: 2px; }
-  .empty-list { color: var(--muted); padding: 12px 10px; font-size: 0.9rem; }
-  .sync { padding: 10px 16px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; }
-
-  /* Editor */
-  .main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
-  .toolbar { display: flex; align-items: center; gap: 8px; padding: 12px 20px; border-bottom: 1px solid var(--line); min-height: 56px; }
-  .back { display: none; border: 0; background: transparent; padding: 6px 8px; font-weight: 600; color: var(--accent); }
-  .status { color: var(--muted); font-size: 0.85rem; margin-right: auto; }
-  .del { border: 1px solid var(--line); background: transparent; padding: 6px 12px; border-radius: 8px; font-size: 0.88rem; }
-  .del:hover { border-color: var(--danger); color: var(--danger); }
-  .editor { flex: 1; overflow-y: auto; }
-  .sheet { max-width: 68ch; margin: 0 auto; padding: 36px 28px 80px; }
-  .title-in {
-    width: 100%; border: 0; background: transparent; color: var(--ink);
-    font: 600 2rem/1.2 var(--read); letter-spacing: -0.015em; padding: 0; margin-bottom: 18px;
-  }
-  .title-in::placeholder, .body-in::placeholder { color: var(--muted); opacity: 0.7; }
-  .title-in:focus, .body-in:focus { outline: none; }
-  .body-in {
-    width: 100%; min-height: 60vh; border: 0; background: transparent; color: var(--ink);
-    font: 400 1.075rem/1.75 var(--read); resize: none; padding: 0;
-  }
-  .blank { flex: 1; display: grid; place-items: center; text-align: center; padding: 24px; color: var(--muted); }
-  .blank p { margin: 0 0 14px; font-family: var(--read); font-size: 1.15rem; color: var(--ink); }
-
-  @media (max-width: 720px) {
-    .app { grid-template-columns: 1fr; }
-    .side { border-right: 0; }
-    .app.editing .side { display: none; }
-    .app:not(.editing) .main { display: none; }
-    .back { display: inline-block; }
-    .sheet { padding: 24px 18px 64px; }
-    .title-in { font-size: 1.6rem; }
-  }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-</style>
-</head>
-<body>
-<div class="app" id="app">
-  <aside class="side" aria-label="Notes list">
-    <div class="side-head">
-      <h1>Notes</h1>
-      <button class="new-btn" id="newBtn" type="button">New note</button>
-    </div>
-    <div class="search">
-      <input id="search" type="search" placeholder="Search notes" aria-label="Search notes" autocomplete="off">
-    </div>
-    <ul class="list" id="list"></ul>
-    <div class="sync" id="sync">Notes are saved in this browser</div>
-  </aside>
-
-  <main class="main" id="main">
-    <div class="toolbar">
-      <button class="back" id="backBtn" type="button">All notes</button>
-      <span class="status" id="status"></span>
-      <button class="del" id="delBtn" type="button" hidden>Delete</button>
-    </div>
-    <div class="editor" id="editorWrap" hidden>
-      <div class="sheet">
-        <input class="title-in" id="titleIn" placeholder="Title" aria-label="Note title" maxlength="200">
-        <textarea class="body-in" id="bodyIn" placeholder="Start writing…" aria-label="Note body"></textarea>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Red Button</title>
+    <style>
+      :root {
+        --bg: #f2f2ef;
+        --ink: #1e2224;
+        --muted: #61686b;
+        --red: #d7261e;
+        --red-dark: #9e1610;
+        --ring: #c9ccc8;
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #171a1b;
+          --ink: #e6e8e6;
+          --muted: #99a1a3;
+          --ring: #2c3133;
+        }
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+      body {
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          16px/1.4 system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        display: grid;
+        place-items: center;
+        text-align: center;
+      }
+      main {
+        display: grid;
+        justify-items: center;
+        gap: 36px;
+        padding: 24px;
+      }
+      .housing {
+        width: min(70vw, 280px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: var(--ring);
+        display: grid;
+        place-items: center;
+        box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.18);
+      }
+      .button {
+        width: 82%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        border: 0;
+        cursor: pointer;
+        background: radial-gradient(
+          circle at 35% 30%,
+          #ff5a4f 0%,
+          var(--red) 45%,
+          var(--red-dark) 100%
+        );
+        box-shadow:
+          0 10px 0 var(--red-dark),
+          0 16px 24px rgba(0, 0, 0, 0.3);
+        transform: translateY(-6px);
+        transition:
+          transform 80ms ease,
+          box-shadow 80ms ease;
+        color: #fff;
+        font:
+          700 1.3rem/1 system-ui,
+          sans-serif;
+        letter-spacing: 0.02em;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      }
+      .button:active,
+      .button.pressed {
+        transform: translateY(4px);
+        box-shadow:
+          0 0 0 var(--red-dark),
+          0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+      .button:focus-visible {
+        outline: 4px solid var(--ink);
+        outline-offset: 6px;
+      }
+      .result {
+        min-height: 2.5em;
+        margin: 0;
+        font-size: 1.6rem;
+        font-weight: 700;
+      }
+      .result small {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 400;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .button {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="housing">
+        <button class="button" id="btn" type="button">Press</button>
       </div>
-    </div>
-    <div class="blank" id="blank">
-      <div>
-        <p>Pick a note, or start a new one.</p>
-        <button class="new-btn" id="newBtn2" type="button">New note</button>
-      </div>
-    </div>
-  </main>
-</div>
-
-<script>
-(() => {
-  const LS_KEY = "notes-app:v1";
-  const $ = (id) => document.getElementById(id);
-  const els = {
-    app: $("app"), list: $("list"), search: $("search"), sync: $("sync"),
-    status: $("status"), del: $("delBtn"), editor: $("editorWrap"), blank: $("blank"),
-    title: $("titleIn"), body: $("bodyIn"), back: $("backBtn")
-  };
-
-  /** notes: id -> {title, body, createdAt, updatedAt} */
-  let notes = {};
-  let activeId = null;
-  let query = "";
-  let mode = "local";          // "local" | "cloud"
-  let col = null;              // db collection ref in cloud mode
-  const dirty = new Set();     // notes with unsaved local edits
-  const timers = {};
-  const chains = {};           // one write at a time per note
-
-  // ---------- local storage ----------
-  function loadLocal() {
-    try { const raw = localStorage.getItem(LS_KEY); return raw ? JSON.parse(raw) : {}; }
-    catch { return {}; }
-  }
-  function saveLocal() {
-    try { localStorage.setItem(LS_KEY, JSON.stringify(notes)); } catch {}
-  }
-
-  // ---------- helpers ----------
-  const uid = () => "n" + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-  const esc = (s) => s.replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-  function highlight(text, q) {
-    const safe = esc(text);
-    if (!q) return safe;
-    const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "ig");
-    return safe.replace(re, m => `<mark>${m}</mark>`);
-  }
-  function when(ts) {
-    const d = new Date(ts), now = new Date();
-    if (d.toDateString() === now.toDateString())
-      return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
-    const opts = { month: "short", day: "numeric" };
-    if (d.getFullYear() !== now.getFullYear()) opts.year = "numeric";
-    return d.toLocaleDateString([], opts);
-  }
-  function preview(n) {
-    return (n.body || "").replace(/\s+/g, " ").trim().slice(0, 90) || "No additional text";
-  }
-
-  // ---------- rendering ----------
-  function renderList() {
-    const q = query.trim().toLowerCase();
-    const items = Object.entries(notes)
-      .filter(([, n]) => !q || (n.title || "").toLowerCase().includes(q) || (n.body || "").toLowerCase().includes(q))
-      .sort((a, b) => b[1].updatedAt - a[1].updatedAt);
-
-    if (!items.length) {
-      els.list.innerHTML = `<li class="empty-list">${q ? "No notes match that search." : "No notes yet. Select New note to write your first one."}</li>`;
-      return;
-    }
-    els.list.innerHTML = items.map(([id, n]) => `
-      <li><button type="button" data-id="${id}" aria-current="${id === activeId}">
-        <span class="item-title">${highlight(n.title || "Untitled", q)}</span>
-        <span class="item-meta">${when(n.updatedAt)} — ${highlight(preview(n), q)}</span>
-      </button></li>`).join("");
-  }
-
-  function renderEditor() {
-    const n = activeId && notes[activeId];
-    els.editor.hidden = !n;
-    els.blank.hidden = !!n;
-    els.del.hidden = !n;
-    els.app.classList.toggle("editing", !!n);
-    if (!n) { els.status.textContent = ""; return; }
-    if (!dirty.has(activeId)) {
-      if (els.title.value !== n.title) els.title.value = n.title || "";
-      if (els.body.value !== n.body) els.body.value = n.body || "";
-    }
-    autosize();
-    if (!dirty.has(activeId)) els.status.textContent = "Edited " + when(n.updatedAt);
-  }
-
-  function render() { renderList(); renderEditor(); }
-
-  function autosize() {
-    els.body.style.height = "auto";
-    els.body.style.height = Math.max(els.body.scrollHeight, window.innerHeight * 0.6) + "px";
-  }
-
-  // ---------- persistence ----------
-  function persist(id) {
-    if (mode === "local") { saveLocal(); return Promise.resolve(); }
-    const n = notes[id];
-    const run = () => n
-      ? col.doc(id).set({ title: n.title, body: n.body, createdAt: n.createdAt, updatedAt: n.updatedAt })
-      : col.doc(id).delete();
-    chains[id] = (chains[id] || Promise.resolve()).then(run, run).catch(err => {
-      els.status.textContent = err && err.code === "quota_exceeded"
-        ? "Storage is full. Delete some notes to save new ones."
-        : "Couldn't save. Your changes are kept here; keep editing to retry.";
-      throw err;
-    });
-    saveLocal(); // keep a local copy too
-    return chains[id];
-  }
-
-  function scheduleSave(id) {
-    dirty.add(id);
-    els.status.textContent = "Saving…";
-    clearTimeout(timers[id]);
-    timers[id] = setTimeout(async () => {
-      try {
-        await persist(id);
-        dirty.delete(id);
-        if (id === activeId) els.status.textContent = "Saved";
-      } catch {}
-    }, 600);
-  }
-
-  // ---------- actions ----------
-  function createNote() {
-    const id = uid(), now = Date.now();
-    notes[id] = { title: "", body: "", createdAt: now, updatedAt: now };
-    activeId = id;
-    query = ""; els.search.value = "";
-    dirty.delete(id);
-    els.title.value = ""; els.body.value = "";
-    render();
-    persist(id).catch(() => {});
-    els.title.focus();
-  }
-
-  function openNote(id) {
-    if (!notes[id]) return;
-    activeId = id;
-    els.title.value = notes[id].title || "";
-    els.body.value = notes[id].body || "";
-    render();
-    els.editor.scrollTop = 0;
-  }
-
-  function deleteNote() {
-    if (!activeId) return;
-    const n = notes[activeId];
-    const label = n.title || "this untitled note";
-    if (!confirm(`Delete “${label}”? This can't be undone.`)) return;
-    const id = activeId;
-    clearTimeout(timers[id]); dirty.delete(id);
-    delete notes[id];
-    activeId = null;
-    render();
-    persist(id).catch(() => {});
-  }
-
-  function onEdit() {
-    const n = notes[activeId]; if (!n) return;
-    n.title = els.title.value;
-    n.body = els.body.value;
-    n.updatedAt = Date.now();
-    autosize();
-    renderList();
-    scheduleSave(activeId);
-  }
-
-  // ---------- events ----------
-  $("newBtn").addEventListener("click", createNote);
-  $("newBtn2").addEventListener("click", createNote);
-  els.del.addEventListener("click", deleteNote);
-  els.back.addEventListener("click", () => { activeId = null; render(); });
-  els.list.addEventListener("click", (e) => {
-    const b = e.target.closest("button[data-id]"); if (b) openNote(b.dataset.id);
-  });
-  els.search.addEventListener("input", () => { query = els.search.value; renderList(); });
-  els.title.addEventListener("input", onEdit);
-  els.body.addEventListener("input", onEdit);
-  els.title.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") { e.preventDefault(); els.body.focus(); }
-  });
-  document.addEventListener("keydown", (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); els.search.focus(); }
-  });
-  window.addEventListener("resize", autosize);
-
-  // ---------- start ----------
-  notes = loadLocal();
-  render();
-
-})();
-</script>
-</body>
+      <p class="result" id="result" role="status" aria-live="polite"></p>
+    </main>
+    <script>
+      const btn = document.getElementById('btn')
+      const result = document.getElementById('result')
+      let count = 0
+      btn.addEventListener('click', () => {
+        count += 1
+        btn.classList.add('pressed')
+        setTimeout(() => btn.classList.remove('pressed'), 120)
+        result.innerHTML =
+          'It works! <small>Pressed ' +
+          count +
+          (count === 1 ? ' time' : ' times') +
+          '</small>'
+      })
+    </script>
+  </body>
 </html>
