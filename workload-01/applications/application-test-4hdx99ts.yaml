@@ -191,13 +191,6 @@ metadata:
   labels:
     app: application-test-4hdx99ts
     managed-by: portainer-run
-  annotations:
-    portainer-run/deploy-type: vibe
-    portainer-run/git-target-id: b0070221-8c8e-4bec-8e51-f9b3552ab3c6
-    portainer-run/git-branch: master
-    portainer-run/git-path: workload-01/applications/application-test-4hdx99ts.yaml
-    portainer-run/runtime: nginx
-    portainer-run/vibe-source-path: workload-01/applications/application-test-4hdx99ts/src
 spec:
   type: ClusterIP
   selector:
@@ -216,17 +209,11 @@ metadata:
     app: application-test-4hdx99ts
     managed-by: portainer-run
   annotations:
-    portainer-run/deploy-type: vibe
-    portainer-run/git-target-id: b0070221-8c8e-4bec-8e51-f9b3552ab3c6
-    portainer-run/git-branch: master
-    portainer-run/git-path: workload-01/applications/application-test-4hdx99ts.yaml
-    portainer-run/runtime: nginx
-    portainer-run/vibe-source-path: workload-01/applications/application-test-4hdx99ts/src
     kubernetes.io/ingress.class: traefik
 spec:
   ingressClassName: traefik
   rules:
-    - host: application-test-4hdx99ts.e2e.localhost
+    - host: application-test-4hdx99ts-edited.e2e.localhost
       http:
         paths:
           - path: /
