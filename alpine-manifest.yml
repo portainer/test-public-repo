@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reconcile-alpine
+  labels:
+    app: reconcile-alpine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reconcile-alpine
+  template:
+    metadata:
+      labels:
+        app: reconcile-alpine
+    spec:
+      containers:
+        - name: alpine
+          image: alpine:3.20
+          stdin: true
+          tty: true
